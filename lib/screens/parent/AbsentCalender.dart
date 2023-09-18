@@ -16,17 +16,19 @@ class _MyCalendarState extends State<MyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar(
-      calendarFormat: _calendarFormat,
-      focusedDay: _focusedDay,
-      firstDay: DateTime.utc(2023, 01, 01),
-      lastDay: DateTime.utc(2024, 12, 31),
-      onDaySelected: (day, calendarFormat) {
-        setState(() {
-          _focusedDay = day;
-          // _calendarFormat = CalendarFormat.fromDateTime(day);
-        });
-      },
+    return Material(
+      child: TableCalendar(
+        calendarFormat: _calendarFormat,
+        focusedDay: _focusedDay,
+        firstDay: DateTime.utc(2023, 01, 01),
+        lastDay: DateTime.utc(2024, 12, 31),
+        onDaySelected: (day, calendarFormat) {
+          setState(() {
+            _focusedDay = day;
+            _calendarFormat = day.weekday == DateTime.saturday ? CalendarFormat.twoWeeks : CalendarFormat.week;
+          });
+        },
+      ),
     );
   }
 }
