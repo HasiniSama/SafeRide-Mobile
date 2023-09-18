@@ -26,7 +26,10 @@ class _DriverHomeState extends State<DriverHome> {
           children: <Widget>[
             const DrawerHeader(
               padding: EdgeInsets.zero,
-              child: ProfileCard(name: 'john doe', email: 'trytyjgku@gmail.com',),
+              child: ProfileCard(
+                name: 'john doe',
+                email: 'trytyjgku@gmail.com',
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -84,44 +87,46 @@ class _DriverHomeState extends State<DriverHome> {
                 ],
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              height: 50.0,
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      appColors.kBlueGreenGra1,
-                      appColors.kBlueGreenGra2
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                height: 50.0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        appColors.kBlueGreenGra1,
+                        appColors.kBlueGreenGra2
+                      ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(left: 16.0),
+                        child: Icon(
+                          Icons.arrow_circle_left,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
+                      Text(
+                        'Back',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
+                      ),
                     ],
                   ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Icon(
-                        Icons.arrow_circle_left,
-                        color: Colors.white,
-                        size: 35, // Icon color
-                      ),
-                    ),
-                    SizedBox(width: 8.0),
-                    Text(
-                      'Back', // Your text label
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
