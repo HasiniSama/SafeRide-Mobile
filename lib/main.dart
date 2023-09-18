@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
+import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
 import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyCalendar(),
+      home: DriverHome(),
     );
   }
 }
