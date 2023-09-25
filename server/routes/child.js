@@ -97,37 +97,6 @@ const router = express.Router();
  *         description: Child not found.
  *       '500':
  *         description: Server error
- * /child/parentId/{id}:
- *   get:
- *     summary: Get a Children by Parent ID.
- *     tags: [Child]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the Parent to retrieve relevant Children.
- *     responses:
- *       '200':
- *         description: Successful response.
- *         content:
- *           application/json:
- *             schema:
- *              type: array
- *              items:
- *                  $ref: '#/components/schemas/Child'
- *             example:
- *               - id: "6123456789abcdef01234567"
- *                 name: "John Doe"
- *                 parentId: "6123456789abcdef01234567"
- *               - id: "6123456789abcdef01234568"
- *                 name: "Jane Doe"
- *                 parentId: "6123456789abcdef01234567"
- *       '404':
- *         description: Child not found.
- *       '500':
- *         description: Server error
  *   put:
  *     summary: Update a Child by ID.
  *     tags: [Child]
@@ -172,6 +141,37 @@ const router = express.Router();
  *     responses:
  *       '204':
  *         description: Successful response (no content).
+ *       '404':
+ *         description: Child not found.
+ *       '500':
+ *         description: Server error
+ * /child/parentId/{id}:
+ *   get:
+ *     summary: Get Children by Parent ID.
+ *     tags: [Child]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the Parent to retrieve relevant Children.
+ *     responses:
+ *       '200':
+ *         description: Successful response.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              type: array
+ *              items:
+ *                  $ref: '#/components/schemas/Child'
+ *             example:
+ *               - id: "6123456789abcdef01234567"
+ *                 name: "John Doe"
+ *                 parentId: "6123456789abcdef01234567"
+ *               - id: "6123456789abcdef01234568"
+ *                 name: "Jane Doe"
+ *                 parentId: "6123456789abcdef01234567"
  *       '404':
  *         description: Child not found.
  *       '500':
