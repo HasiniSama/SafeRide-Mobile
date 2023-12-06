@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 
 class IconSquare extends StatelessWidget {
-
   final String navigator;
   final Icon icon;
   final String name;

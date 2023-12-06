@@ -22,13 +22,13 @@ class _ChildProfileState extends State<ChildProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/childProfileBackground.png',
-            ),
-            Column(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/childProfileBackground.png',
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -127,26 +127,24 @@ class _ChildProfileState extends State<ChildProfile> {
                     },
                     style: AppButtonsStyle.blueButtonStyle,
                     child: const Text('Save',
-                        style:
-                        TextStyle(color: Colors.white, fontSize: 24)),
+                        style: TextStyle(color: Colors.white, fontSize: 24)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 60.0),
                   child: ElevatedButton(
-                  onPressed: () {
-                    // Add your button's functionality here
-                  },
-                  style: AppButtonsStyle.lightBlueButtonStyle,
-                  child: const Text('Cancel',
-                      style:
-                      TextStyle(color: Colors.black, fontSize: 24)),
-                ),
+                    onPressed: () {
+                      // Add your button's functionality here
+                    },
+                    style: AppButtonsStyle.lightBlueButtonStyle,
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.black, fontSize: 24)),
+                  ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

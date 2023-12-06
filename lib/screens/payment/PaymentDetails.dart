@@ -12,17 +12,16 @@ class PaymentDetails extends StatefulWidget {
 }
 
 class _PaymentDetailsState extends State<PaymentDetails> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/childProfileBackground.png',
-            ),
-            Column(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/childProfileBackground.png',
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -194,30 +193,30 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         ),
                       ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Status',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                )),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Add your button's functionality here
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: appColors.kBlue2,
-                                minimumSize: const Size(70, 25),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Status',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                              )),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Add your button's functionality here
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: appColors.kBlue2,
+                              minimumSize: const Size(70, 25),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
-                              child: const Text('Paid',
-                                  style: TextStyle(color: Colors.white, fontSize: 14)),
                             ),
-                          ],
-                        ),
-
+                            child: const Text('Paid',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14)),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -245,8 +244,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

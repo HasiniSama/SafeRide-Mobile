@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 
 class ProfileCard extends StatelessWidget {
-
   final String name;
   final String email;
 

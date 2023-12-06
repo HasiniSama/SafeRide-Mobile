@@ -29,7 +29,6 @@ class AppButtonsStyle {
   );
 }
 
-
 // ElevatedButton(
 // onPressed: () {
 // // Add your button's functionality here

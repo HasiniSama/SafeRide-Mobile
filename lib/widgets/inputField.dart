@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 
 class CustomInputField extends StatelessWidget {
-
   final TextEditingController controller;
   final String labelText;
   final String exampleText;

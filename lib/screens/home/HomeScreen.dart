@@ -26,7 +26,10 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             const DrawerHeader(
               padding: EdgeInsets.zero,
-              child: ProfileCard(name: 'dtcfyvgubhinj', email: 'tcyvubinm@gmail.com',),
+              child: ProfileCard(
+                name: 'dtcfyvgubhinj',
+                email: 'tcyvubinm@gmail.com',
+              ),
             ),
             Center(
               child: SingleChildScrollView(

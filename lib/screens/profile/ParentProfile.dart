@@ -19,20 +19,21 @@ class _ParentProfileState extends State<ParentProfile> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _conformPasswordController = TextEditingController();
+  final TextEditingController _conformPasswordController =
+      TextEditingController();
   final TextEditingController _addressController1 = TextEditingController();
   final TextEditingController _addressController2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
+      body: Stack(
         children: [
           Image.asset(
             'assets/parentProfileBackground.png',
           ),
-          Column(
+          SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -120,7 +121,8 @@ class _ParentProfileState extends State<ParentProfile> {
                           width: 260.0,
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
                           decoration: BoxDecoration(
-                            color: Colors.white, // Set the background color to white
+                            color: Colors.white,
+                            // Set the background color to white
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                           child: TextFormField(
@@ -131,7 +133,8 @@ class _ParentProfileState extends State<ParentProfile> {
                                 fontSize: 16.0,
                                 color: appColors.kBlue2,
                               ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
@@ -139,34 +142,34 @@ class _ParentProfileState extends State<ParentProfile> {
                           ),
                         ),
                       ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 60.0, bottom: 20.0),
-                    child:ElevatedButton(
-                        onPressed: () {
-                          // Add your button's functionality here
-                        },
-                        style: AppButtonsStyle.blueButtonStyle,
-                        child: const Text('Save',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 24)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 60.0, bottom: 20.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Add your button's functionality here
+                          },
+                          style: AppButtonsStyle.blueButtonStyle,
+                          child: const Text('Save',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 24)),
+                        ),
                       ),
-                  ),
-                  ElevatedButton(
+                      ElevatedButton(
                         onPressed: () {
                           // Add your button's functionality here
                         },
                         style: AppButtonsStyle.lightBlueButtonStyle,
-                      child: const Text('Cancel',
+                        child: const Text('Cancel',
                             style:
-                            TextStyle(color: Colors.black, fontSize: 24)),
+                                TextStyle(color: Colors.black, fontSize: 24)),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
+          ),
         ],
-      ),
       ),
     );
   }

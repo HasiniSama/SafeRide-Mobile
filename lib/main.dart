@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
-import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
-
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
-import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
-import 'package:safe_ride_mobile/screens/payment/CardDetails.dart';
-import 'package:safe_ride_mobile/screens/payment/PaymentDetails.dart';
-import 'package:safe_ride_mobile/screens/payment/SelectBus.dart';
-import 'package:safe_ride_mobile/screens/payment/SelectCard.dart';
-import 'package:safe_ride_mobile/screens/profile/ChildProfile.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -23,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: DriverHome(),
+      home: HomePage(),
     );
   }
 }

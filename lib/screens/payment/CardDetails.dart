@@ -15,13 +15,13 @@ class _CardDetailsState extends State<CardDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/childProfileBackground.png',
-            ),
-            Column(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/childProfileBackground.png',
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -93,7 +93,8 @@ class _CardDetailsState extends State<CardDetails> {
                           child: Column(
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
                                 decoration: const BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
@@ -121,7 +122,8 @@ class _CardDetailsState extends State<CardDetails> {
                                 children: [
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 10),
                                       decoration: const BoxDecoration(
                                         border: Border(
                                           right: BorderSide(
@@ -145,24 +147,26 @@ class _CardDetailsState extends State<CardDetails> {
                                   ),
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 10),
                                       child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: const [
-                                            Text('Amount',
-                                                style: TextStyle(
-                                                  fontSize: 14,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text('Amount',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  )),
+                                              Icon(Icons.credit_card,
                                                   color: Colors.white,
-                                                )),
-                                            Icon(Icons.credit_card,
-                                                color: Colors.white, size: 24),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                                  size: 24),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -196,8 +200,8 @@ class _CardDetailsState extends State<CardDetails> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

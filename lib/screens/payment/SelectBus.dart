@@ -21,13 +21,13 @@ class _SelectBusState extends State<SelectBus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/paymentBG1.png',
-            ),
-            Column(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/paymentBG1.png',
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -124,8 +124,8 @@ class _SelectBusState extends State<SelectBus> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

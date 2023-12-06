@@ -50,24 +50,26 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       body: _currentPosition != null
           ? GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-          zoom: 15.0,
-        ),
-        markers: {
-          Marker(
-            markerId: const MarkerId('redDot'),
-            position: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueRed,
-            ),
-          ),
-        },
-      )
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(
+                    _currentPosition!.latitude, _currentPosition!.longitude),
+                zoom: 15.0,
+              ),
+              markers: {
+                Marker(
+                  markerId: const MarkerId('redDot'),
+                  position: LatLng(
+                      _currentPosition!.latitude, _currentPosition!.longitude),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueRed,
+                  ),
+                ),
+              },
+            )
           : const Center(
-        child: CircularProgressIndicator(),
-      ),
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }

@@ -26,7 +26,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           children: <Widget>[
             const DrawerHeader(
               padding: EdgeInsets.zero,
-              child: ProfileCard(name: 'john doe', email: '',),
+              child: ProfileCard(
+                name: 'john doe',
+                email: '',
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -107,7 +110,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             ),
             Container(
               padding:
-              const EdgeInsets.only(left: 32.0, bottom: 50.0, right: 32.0),
+                  const EdgeInsets.only(left: 32.0, bottom: 50.0, right: 32.0),
               child: Row(
                 children: const <Widget>[
                   IconSquare(

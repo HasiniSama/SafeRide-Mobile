@@ -17,13 +17,13 @@ class _SelectCardState extends State<SelectCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/paymentBG2.png',
-            ),
-            Column(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/paymentBG2.png',
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -176,8 +176,8 @@ class _SelectCardState extends State<SelectCard> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -46,7 +46,8 @@ class BottomPopupBar extends StatelessWidget {
               // Add your button's functionality here
             },
             style: AppButtonsStyle.popupButtonStyle,
-            child: const Text('Click Me', style: TextStyle(color: appColors.kBlue2, fontSize: 24)),
+            child: const Text('Click Me',
+                style: TextStyle(color: appColors.kBlue2, fontSize: 24)),
           ),
         ],
       ),
@@ -54,7 +55,6 @@ class BottomPopupBar extends StatelessWidget {
   }
 }
 // BottomPopupBar(),
-
 
 // ElevatedButton(
 // onPressed: () {
