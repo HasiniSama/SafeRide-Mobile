@@ -30,7 +30,9 @@ class _BusListState extends State<BusList> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
                       margin: const EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -54,6 +56,7 @@ class _BusListState extends State<BusList> {
                           size: 40.0,
                           color: appColors.kBlue2,
                         ),
+                      ),
                       ),
                     ),
                   ],

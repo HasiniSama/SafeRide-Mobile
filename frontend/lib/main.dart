@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
+import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
+import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
+import 'package:safe_ride_mobile/screens/parent/BusList.dart';
+import 'package:safe_ride_mobile/screens/payment/PaymentDetails.dart';
+import 'package:safe_ride_mobile/screens/profile/ChildProfile.dart';
+import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -16,6 +23,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomePage(),
+      routes: {
+        '/home': (context) => const HomePage(),
+        '/parent_profile': (context) => const ParentProfile(),
+        '/driver_home': (context) => const DriverHome(),
+        '/absent_calender': (context) => const AbsentCalender(),
+        '/child_profile': (context) => const ChildProfile(),
+        '/child_home': (context) => const ChildHomeScreen(),
+        '/bus_list': (context) => const BusList(),
+        '/payment': (context) => const PaymentDetails(),
+      }
     );
   }
 }

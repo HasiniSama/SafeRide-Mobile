@@ -126,7 +126,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             SizedBox(
               width: double.infinity,
               height: 50.0,
-              child: Container(
+              child: GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/home'),
+                child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -163,6 +165,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   ],
                 ),
               ),
+            ),
             ),
           ],
         ),

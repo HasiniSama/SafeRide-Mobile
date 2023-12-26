@@ -50,17 +50,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 4.0,
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/parent_profile'),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 4.0,
+                  ),
                 ),
-              ),
-              child: const CircleAvatar(
-                radius: 15.0,
-                backgroundImage: AssetImage('assets/profile_image.jpg'),
+                child: const CircleAvatar(
+                  radius: 15.0,
+                  backgroundImage: AssetImage('assets/profile_image.jpg'),
+                ),
               ),
             ),
             // Profile picture

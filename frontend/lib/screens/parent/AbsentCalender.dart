@@ -43,7 +43,9 @@ class _AbsentCalenderState extends State<AbsentCalender> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
                       margin: const EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -68,6 +70,7 @@ class _AbsentCalenderState extends State<AbsentCalender> {
                           color: appColors.kBlue2,
                         ),
                       ),
+                    ),
                     ),
                   ],
                 ),

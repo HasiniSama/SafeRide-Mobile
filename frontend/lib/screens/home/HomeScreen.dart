@@ -4,6 +4,7 @@ import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/widgets/IconSquare.dart';
 import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
+import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -38,21 +39,21 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: const <Widget>[
                     IconSquare(
-                      navigator: '',
+                      navigator: '/child_home',
                       icon: Icon(
                         Icons.accessibility,
                       ),
                       name: 'Child 01',
                     ),
                     IconSquare(
-                      navigator: '',
+                      navigator: '/child_profile',
                       icon: Icon(
                         Icons.accessibility,
                       ),
                       name: 'Child 02',
                     ),
                     IconSquare(
-                      navigator: '',
+                      navigator: '/child_profile',
                       icon: Icon(
                         Icons.accessibility,
                       ),
@@ -88,14 +89,14 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: const <Widget>[
                   IconSquare(
-                    navigator: '',
+                    navigator: '/bus_list',
                     icon: Icon(
                       Icons.search,
                     ),
                     name: 'Find Busses',
                   ),
                   IconSquare(
-                    navigator: '',
+                    navigator: '/absent_calender',
                     icon: Icon(
                       Icons.calendar_today_outlined,
                     ),
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                     name: 'Transection History',
                   ),
                   IconSquare(
-                    navigator: '',
+                    navigator: '/payment',
                     icon: Icon(
                       Icons.account_balance,
                     ),
@@ -150,7 +151,9 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: double.infinity,
               height: 50.0,
-              child: Container(
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -187,6 +190,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+            ),
             ),
           ],
         ),

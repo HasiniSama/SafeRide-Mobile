@@ -30,7 +30,8 @@ class _ParentProfileState extends State<ParentProfile> {
       body: Stack(
         children: [
           Image.asset(
-            'assets/parentProfileBackground.png',
+            'assets/childProfileBackground.png',
+            fit: BoxFit.cover,
           ),
           SingleChildScrollView(
             child: Column(
@@ -38,29 +39,32 @@ class _ParentProfileState extends State<ParentProfile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: appColors.kBlue2,
-                          width: 1.0,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        margin: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: appColors.kBlue2,
+                            width: 1.0,
                           ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.arrow_back,
-                          size: 40.0,
-                          color: appColors.kBlue2,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_back,
+                            size: 40.0,
+                            color: appColors.kBlue2,
+                          ),
                         ),
                       ),
                     ),

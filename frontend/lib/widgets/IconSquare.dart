@@ -16,6 +16,7 @@ class IconSquare extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Navigator.pushNamed(context, navigator);
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (context) => ProfileDetailPage(),
         // ));

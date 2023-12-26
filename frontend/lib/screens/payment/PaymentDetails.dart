@@ -26,7 +26,9 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
                       margin: const EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -51,6 +53,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                           color: appColors.kBlue2,
                         ),
                       ),
+                    ),
                     ),
                   ],
                 ),
