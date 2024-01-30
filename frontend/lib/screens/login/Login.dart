@@ -3,7 +3,10 @@ import 'package:safe_ride_mobile/const/appColors.dart';
 import '../../widgets/buttons.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+
+  final VoidCallback login;
+
+  const LoginPage({required this.login, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +34,11 @@ class LoginPage extends StatelessWidget {
                   width: 200,
                   height: 200,
                 ),
-                const SizedBox(height: 70),
+                const SizedBox(height: 30),
                 // Elevated button
                 ElevatedButton(
                   style: AppButtonsStyle.blueButtonStyle,
-                  onPressed: () {
-                    // Handle login button press
-                    // Typically, you might navigate to another page or perform authentication
-                  },
+                  onPressed: login,
                   child: const Text('Login'),
                 ),
                 const SizedBox(height: 30),
