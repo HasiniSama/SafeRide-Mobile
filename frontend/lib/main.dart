@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
 import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
+import 'package:safe_ride_mobile/screens/login/Login.dart';
 import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
 import 'package:safe_ride_mobile/screens/parent/BusList.dart';
 import 'package:safe_ride_mobile/screens/payment/PaymentDetails.dart';
 import 'package:safe_ride_mobile/screens/profile/ChildProfile.dart';
 import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
+
 
 void main() async {
   runApp(const MyApp());
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: const LoginPage(),
       routes: {
         '/home': (context) => const HomePage(),
         '/parent_profile': (context) => const ParentProfile(),
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/child_home': (context) => const ChildHomeScreen(),
         '/bus_list': (context) => const BusList(),
         '/payment': (context) => const PaymentDetails(),
+        '/login': (context) => const LoginPage(),
       }
     );
   }
