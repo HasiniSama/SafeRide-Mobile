@@ -3,12 +3,13 @@ import 'package:safe_ride_mobile/const/appColors.dart';
 
 class AppButtonsStyle {
   static ButtonStyle lightBlueButtonStyle = ElevatedButton.styleFrom(
-    primary: appColors.kBlue1,
+    backgroundColor: appColors.kBlue1,
     minimumSize: const Size(260, 50),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(25.0),
-      side: BorderSide(color: Colors.white, width: 2.0),
+      side: const BorderSide(color: Colors.white, width: 2.0),
     ),
+    textStyle: const TextStyle(color: appColors.kBlue2),
   );
 
   static ButtonStyle blueButtonStyle = ElevatedButton.styleFrom(
