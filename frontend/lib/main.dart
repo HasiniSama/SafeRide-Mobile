@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
 import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
+import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/screens/login/Login.dart';
 import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
 import 'package:safe_ride_mobile/screens/parent/BusList.dart';
@@ -11,20 +13,22 @@ import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:safe_ride_mobile/providers/location_provider.dart';
 
 final FlutterAppAuth flutterAppAuth = FlutterAppAuth();
 
 const clientId = '0uefCc9YcaAuxnkEDWGjZ16jYWsa';
 const redirectUrl = 'wso2.asgardeo.saferide://login-callback';
-const discoveryUrl = 'https://api.asgardeo.io/t/hasinisama2/oauth2/token/.well-known/openid-configuration';
-const userInfoEndpoint = 'https://api.asgardeo.io/t/hasinisama2/oauth2/userinfo';
+const discoveryUrl =
+    'https://api.asgardeo.io/t/hasinisama2/oauth2/token/.well-known/openid-configuration';
+const userInfoEndpoint =
+    'https://api.asgardeo.io/t/hasinisama2/oauth2/userinfo';
 
 void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -32,7 +36,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   late bool _isUserLoggedIn;
   late String? _idToken;
   late String? _accessToken;
@@ -54,7 +57,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> login() async {
     try {
       final AuthorizationTokenResponse? result =
-      await flutterAppAuth.authorizeAndExchangeCode(
+          await flutterAppAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
           clientId,
           redirectUrl,
@@ -119,23 +122,31 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Safe Ride App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: _isUserLoggedIn ? HomePage(logout: logout) : LoginPage(login: login),
-        routes: {
-          '/home': (context) => HomePage(logout: logout),
-          '/parent_profile': (context) => const ParentProfile(),
-          '/driver_home': (context) => const DriverHome(),
-          '/absent_calender': (context) => const AbsentCalender(),
-          '/child_profile': (context) => const ChildProfile(),
-          '/child_home': (context) => const ChildHomeScreen(),
-          '/bus_list': (context) => const BusList(),
-          '/payment': (context) => const PaymentDetails(),
-          '/login': (context) => LoginPage(login: login),
-        }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+          child: MapScreen(),
+        )
+      ],
+      child: MaterialApp(
+          title: 'Safe Ride App',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          // home: HomePage(logout: logout),
+          home: _isUserLoggedIn ? HomePage(logout: logout) : LoginPage(login: login),
+          routes: {
+            '/home': (context) => HomePage(logout: logout),
+            '/parent_profile': (context) => const ParentProfile(),
+            '/driver_home': (context) => const DriverHome(),
+            '/absent_calender': (context) => const AbsentCalender(),
+            '/child_profile': (context) => const ChildProfile(),
+            '/child_home': (context) => const ChildHomeScreen(),
+            '/bus_list': (context) => const BusList(),
+            '/payment': (context) => const PaymentDetails(),
+            '/login': (context) => LoginPage(login: login),
+          }),
     );
   }
 }
