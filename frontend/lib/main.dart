@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_ride_mobile/screens/firebase/FirebaseAdd.dart';
 import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
 import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
@@ -14,6 +15,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:safe_ride_mobile/providers/location_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 final FlutterAppAuth flutterAppAuth = FlutterAppAuth();
 
@@ -25,6 +27,8 @@ const userInfoEndpoint =
     'https://api.asgardeo.io/t/hasinisama2/oauth2/userinfo';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -146,6 +150,7 @@ class _MyAppState extends State<MyApp> {
             '/bus_list': (context) => const BusList(),
             '/payment': (context) => const PaymentDetails(),
             '/login': (context) => LoginPage(login: login),
+            '/firebase_add': (context) => const FirebaseAdd(),
           }),
     );
   }

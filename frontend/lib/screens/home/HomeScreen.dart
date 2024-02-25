@@ -40,6 +40,13 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: const <Widget>[
                     IconSquare(
+                      navigator: '/firebase_add',
+                      icon: Icon(
+                        Icons.fire_hydrant,
+                      ),
+                      name: 'Test Firebase',
+                    ),
+                    IconSquare(
                       navigator: '/child_home',
                       icon: Icon(
                         Icons.accessibility,
