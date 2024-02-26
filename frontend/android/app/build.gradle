@@ -52,7 +52,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         manifestPlaceholders += [
-                'appAuthRedirectScheme': 'com.example.saferidemobile'
+                'appAuthRedirectScheme': 'wso2.asgardeo.saferide'
         ]
     }
 
