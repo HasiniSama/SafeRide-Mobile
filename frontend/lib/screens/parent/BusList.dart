@@ -145,7 +145,7 @@ class _BusListState extends State<BusList> {
                                 // Add your button's functionality here
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: appColors.kBlue2,
+                                backgroundColor: appColors.kBlue2,
                                 fixedSize: const Size(160, 50),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),

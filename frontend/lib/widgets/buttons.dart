@@ -13,7 +13,7 @@ class AppButtonsStyle {
   );
 
   static ButtonStyle blueButtonStyle = ElevatedButton.styleFrom(
-    primary: appColors.kBlue2,
+    backgroundColor: appColors.kBlue2,
     minimumSize: const Size(260, 50),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(25.0),
@@ -21,7 +21,7 @@ class AppButtonsStyle {
     ),
   );
   static ButtonStyle popupButtonStyle = ElevatedButton.styleFrom(
-    primary: Colors.white,
+    backgroundColor: Colors.white,
     minimumSize: const Size(260, 50),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(25.0),

@@ -208,7 +208,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               // Add your button's functionality here
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: appColors.kBlue2,
+                              backgroundColor: appColors.kBlue2,
                               minimumSize: const Size(70, 25),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25.0),
