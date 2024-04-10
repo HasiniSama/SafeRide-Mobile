@@ -16,6 +16,7 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:safe_ride_mobile/providers/location_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:safe_ride_mobile/screens/firebase/FirebaseAdd.dart';
+import 'firebase_options.dart';
 
 final FlutterAppAuth flutterAppAuth = FlutterAppAuth();
 
@@ -28,7 +29,11 @@ const userInfoEndpoint =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
