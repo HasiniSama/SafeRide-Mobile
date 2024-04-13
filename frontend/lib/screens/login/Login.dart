@@ -4,9 +4,7 @@ import '../../widgets/buttons.dart';
 
 class LoginPage extends StatelessWidget {
 
-  final VoidCallback login;
-
-  const LoginPage({required this.login, Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,10 @@ class LoginPage extends StatelessWidget {
                 // Elevated button
                 ElevatedButton(
                   style: AppButtonsStyle.blueButtonStyle,
-                  onPressed: login,
+                  onPressed: () {
+                    // Handle login button press
+                    // Typically, you might navigate to another page or perform authentication
+                  },
                   child: const Text('Login'),
                 ),
                 const SizedBox(height: 30),
