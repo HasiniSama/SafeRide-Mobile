@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "190544830023",
+    "firebase_url": "https://active-cirrus-418019-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "active-cirrus-418019",
+    "storage_bucket": "active-cirrus-418019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190544830023:android:de14bf77da931f964a9b62",
+        "android_client_info": {
+          "package_name": "com.example.saferidemobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDU0hAny1QdQQv5RbijQtTVj8ObQjNdpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
