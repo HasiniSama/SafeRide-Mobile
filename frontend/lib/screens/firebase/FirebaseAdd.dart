@@ -17,7 +17,6 @@ class _FirebaseAddState extends State<FirebaseAdd> {
     String text1 = textController1.text;
     String text2 = textController2.text;
     String text3 = textController3.text;
-
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
     try {
