@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_ride_mobile/AllWidgets/progressDialog.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/widgets/IconSquare.dart';
 import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
 import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
+
+import '../../Assitant/assistantMethods.dart';
+import '../../providers/location_provider.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -31,12 +38,12 @@ class _HomePageState extends State<HomePage> {
                 email: 'tcyvubinm@gmail.com',
               ),
             ),
-            Center(
+             const Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
                 child: Row(
-                  children: const <Widget>[
+                  children: <Widget>[
                     IconSquare(
                       navigator: '/firebase_add',
                       icon: Icon(
@@ -71,8 +78,8 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
@@ -92,8 +99,8 @@ class _HomePageState extends State<HomePage> {
                 )),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '/bus_list',
                     icon: Icon(
@@ -120,8 +127,8 @@ class _HomePageState extends State<HomePage> {
                 )),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
@@ -142,8 +149,8 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding:
                   const EdgeInsets.only(left: 32.0, bottom: 50.0, right: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
@@ -174,9 +181,9 @@ class _HomePageState extends State<HomePage> {
                     topRight: Radius.circular(10.0),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0),
                       child: Icon(
