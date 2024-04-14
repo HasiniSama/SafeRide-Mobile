@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../main.dart';
 import '../../widgets/PopUp.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/customFont.dart';
@@ -180,6 +181,18 @@ class SignUpParentPage extends StatelessWidget {
         email: emailController.text,
         password: passController.text,
       );
+
+      if (credential!=null){
+        //Save User data into database
+        Map userDataMap = {
+          "firstName": firstNameController.text.trim(),
+          "lastName": lastNameController.text.trim(),
+          "email": emailController.text.trim(),
+          "nic": nicController.text.trim(),
+          "mobile": mobileController.text.trim(),
+        };
+        usersRef.child(credential.user!.uid).set(userDataMap);
+      }
       // Registration successful
       showModalBottomSheet(
           context: context,
