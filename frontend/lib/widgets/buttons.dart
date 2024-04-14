@@ -5,17 +5,37 @@ class AppButtonsStyle {
 
   static ButtonStyle lightBlueButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: appColors.kBlue1,
-    minimumSize: const Size(260, 50),
+    foregroundColor: Colors.white,
+    elevation: 2, // Shadow elevation
+    padding: const EdgeInsets.symmetric(horizontal: 16), // Horizontal padding
+    minimumSize: const Size(260, 50), // Button size
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(25.0),
-      side: const BorderSide(color: Colors.white, width: 2.0),
+      borderRadius: BorderRadius.circular(25.0), // Rounded corners
+      side: const BorderSide(
+        color: appColors.kBlue2, // Border color
+        width: 2.0, // Border width
+      ),
     ),
-    textStyle: const TextStyle(color: appColors.kBlue2),
   );
 
   static ButtonStyle blueButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: appColors.kBlue2,
     foregroundColor: Colors.white,
+    elevation: 2, // Shadow elevation
+    padding: const EdgeInsets.symmetric(horizontal: 16), // Horizontal padding
+    minimumSize: const Size(260, 50), // Button size
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(25.0), // Rounded corners
+      side: const BorderSide(
+        color: appColors.kBlue2, // Border color
+        width: 2.0, // Border width
+      ),
+    ),
+  );
+
+  static ButtonStyle whiteButtonStyle = ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    foregroundColor: appColors.kBlue2,
     elevation: 4, // Shadow elevation
     padding: const EdgeInsets.symmetric(horizontal: 16), // Horizontal padding
     minimumSize: const Size(260, 50), // Button size

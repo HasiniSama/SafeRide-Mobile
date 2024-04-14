@@ -5,11 +5,14 @@ class CustomText extends StatelessWidget {
 
   final String text;
   final double fontSize; // Parameter for font size
+  final Color? color;
 
-  const CustomText({super.key,
+  const CustomText({
+    Key? key,
     required this.text,
-    this.fontSize = 20.0, // Default font size
-  });
+    this.fontSize = 20.0,
+    this.color, // Optional color parameter
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,9 @@ class CustomText extends StatelessWidget {
         fontFamily: 'Open Sans',
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.w700,
-        fontSize: fontSize, // Use the provided fontSize parameter
-        height: 1.0, // Adjust line height as needed
-        color: Colors.white,
+        fontSize: fontSize,
+        height: 1.0,
+        color: color ?? Colors.white,
       ),
     );
   }
