@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/customFont.dart';
-import '../../widgets/formField.dart';
 import '../../widgets/transparentRectangle.dart';
+import '../../widgets/uploadFormField.dart';
 
-class SignUpParentPage extends StatelessWidget {
+class SignUpDriverDocPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
 
-  SignUpParentPage({super.key});
+  SignUpDriverDocPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class SignUpParentPage extends StatelessWidget {
                       children: [
                         const TransparentRectangle(
                           width: 325.0,
-                          height: 888.0,
+                          height: 700.0,
                           borderRadius: 25.0,
                         ),
                         Positioned(
@@ -58,48 +58,29 @@ class SignUpParentPage extends StatelessWidget {
                           height: 888.0,
                           child: Column(
                             children: [
-                              const CustomText(text: 'Parent Sign Up', fontSize: 25),
+                              const CustomText(text: 'Driver Sign Up', fontSize: 25),
+                              const SizedBox(height: 10),
+                              const CustomText(text: 'Documentation', fontSize: 14),
                               const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'First Name',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
+                              FileUploadFormField(
+                                labelText: 'Driving License',
+                                controller: TextEditingController(),
+                                maxWidth: 260,
+                                height: 150,
                               ),
                               const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'Last Name',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
+                              FileUploadFormField(
+                                labelText: 'National Identity Card',
+                                controller: TextEditingController(),
+                                maxWidth: 260,
+                                height: 150,
                               ),
                               const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'Email',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                              const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'NIC No.',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                              const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'Mobile',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                              const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'Password',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                              const SizedBox(height: 30),
-                              LabeledFormField(
-                                labelText: 'Confirm Password',
-                                controller: emailController,
-                                keyboardType: TextInputType.emailAddress,
+                              FileUploadFormField(
+                                labelText: 'Vehicle Registration',
+                                controller: TextEditingController(),
+                                maxWidth: 260,
+                                height: 150,
                               ),
                             ],
                           ),
@@ -113,7 +94,7 @@ class SignUpParentPage extends StatelessWidget {
                         // Handle login button press
                         // Typically, you might navigate to another page or perform authentication
                       },
-                      child: const CustomText(text: 'Sign Up', fontSize: 24),
+                      child: const CustomText(text: 'Submit', fontSize: 24),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
@@ -122,7 +103,7 @@ class SignUpParentPage extends StatelessWidget {
                         // Handle login button press
                         // Typically, you might navigate to another page or perform authentication
                       },
-                      child: const CustomText(text: 'Cancel', fontSize: 24),
+                      child: const CustomText(text: 'Back', fontSize: 24),
                     ),
                     const SizedBox(height: 75),
                   ],

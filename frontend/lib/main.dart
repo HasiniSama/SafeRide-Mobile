@@ -5,6 +5,8 @@ import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
 import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/screens/login/Login.dart';
+import 'package:safe_ride_mobile/screens/login/SignUpDriver.dart';
+import 'package:safe_ride_mobile/screens/login/SignUpDriverDoc.dart';
 import 'package:safe_ride_mobile/screens/login/SignUpParent.dart';
 import 'package:safe_ride_mobile/screens/login/SignUpRole.dart';
 import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
@@ -51,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             primarySwatch: Colors.blue,
           ),
           // home: HomePage(logout: logout),
-          home: SignUpParent(),
+          home: SignUpDriverDocPage(),
           routes: {
             '/home': (context) => const HomePage(),
             '/parent_profile': (context) => const ParentProfile(),
@@ -62,8 +64,10 @@ class _MyAppState extends State<MyApp> {
             '/bus_list': (context) => const BusList(),
             '/payment': (context) => const PaymentDetails(),
             '/login': (context) => LoginPage(),
-            '/sign_up_role': (context) => SignUpRolePage(),
-            '/sign_up_parent': (context) => SignUpParent(),
+            '/sign_up_role': (context) => const SignUpRolePage(),
+            '/sign_up_parent': (context) => SignUpParentPage(),
+            '/sign_up_driver': (context) => SignUpDriverPage(),
+            '/sign_up_driver_doc': (context) => SignUpDriverDocPage(),
             '/firebase_add': (context) => const FirebaseAdd(),
           }),
     );

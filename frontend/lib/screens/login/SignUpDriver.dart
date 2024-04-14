@@ -4,11 +4,11 @@ import '../../widgets/customFont.dart';
 import '../../widgets/formField.dart';
 import '../../widgets/transparentRectangle.dart';
 
-class SignUpParentPage extends StatelessWidget {
+class SignUpDriverPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
 
-  SignUpParentPage({super.key});
+  SignUpDriverPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class SignUpParentPage extends StatelessWidget {
                           height: 888.0,
                           child: Column(
                             children: [
-                              const CustomText(text: 'Parent Sign Up', fontSize: 25),
+                              const CustomText(text: 'Driver Sign Up', fontSize: 25),
                               const SizedBox(height: 30),
                               LabeledFormField(
                                 labelText: 'First Name',
@@ -113,7 +113,7 @@ class SignUpParentPage extends StatelessWidget {
                         // Handle login button press
                         // Typically, you might navigate to another page or perform authentication
                       },
-                      child: const CustomText(text: 'Sign Up', fontSize: 24),
+                      child: const CustomText(text: 'Next', fontSize: 24),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
