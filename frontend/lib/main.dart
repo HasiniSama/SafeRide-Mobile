@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             primarySwatch: Colors.blue,
           ),
           // home: HomePage(logout: logout),
-          home: const HomePage(),
+          home: LoginPage(),
           routes: {
             '/home': (context) => const HomePage(),
             '/parent_profile': (context) => const ParentProfile(),
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
             '/child_home': (context) => const ChildHomeScreen(),
             '/bus_list': (context) => const BusList(),
             '/payment': (context) => const PaymentDetails(),
-            '/login': (context) => const LoginPage(),
+            '/login': (context) => LoginPage(),
             '/firebase_add': (context) => const FirebaseAdd(),
           }),
     );

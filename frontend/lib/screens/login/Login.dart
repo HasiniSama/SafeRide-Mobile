@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:safe_ride_mobile/const/appColors.dart';
 import '../../widgets/buttons.dart';
+import '../../widgets/customFont.dart';
+import '../../widgets/formField.dart';
+import '../../widgets/transparentRectangle.dart';
+import '../../const/appColors.dart';
 
 class LoginPage extends StatelessWidget {
 
-  const LoginPage({Key? key}) : super(key: key);
+  final TextEditingController emailController = TextEditingController();
+
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,37 +26,78 @@ class LoginPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          // Centered content
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Icon
-                Image.asset(
-                  'assets/busIcon.png',
-                  width: 200,
-                  height: 200,
-                ),
-                const SizedBox(height: 30),
-                // Elevated button
-                ElevatedButton(
-                  style: AppButtonsStyle.blueButtonStyle,
-                  onPressed: () {
-                    // Handle login button press
-                    // Typically, you might navigate to another page or perform authentication
-                  },
-                  child: const Text('Login'),
-                ),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  style: AppButtonsStyle.lightBlueButtonStyle,
-                  onPressed: () {
-                    // Handle login button press
-                    // Typically, you might navigate to another page or perform authentication
-                  },
-                  child: const Text('Sign Up'),
-                ),
-              ],
+          SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 90),
+                  Image.asset(
+                    'assets/bus.png',
+                    width: 160,
+                    height: 160,
+                    alignment: Alignment.center,
+                  ),
+                  const SizedBox(height: 30),
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 188,
+                    height: 65,
+                    alignment: Alignment.center,
+                  ),
+                  const SizedBox(height: 33),
+                  Stack(
+                    children: [
+                      const TransparentRectangle(
+                        width: 325.0,
+                        height: 345.0,
+                        borderRadius: 25.0,
+                      ),
+                      Positioned(
+                        top: 47.0,
+                        left: 32.0,
+                        width: 261.0,
+                        height: 351.0,
+                        child: Column(
+                          children: [
+                            const CustomText(text: 'Log In', fontSize: 25),
+                            const SizedBox(height: 30),
+                            LabeledFormField(
+                                labelText: 'Username / Email',
+                                controller: emailController,
+                                keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 30),
+                            LabeledFormField(
+                              labelText: 'Password',
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 8),
+                            const Align(
+                              alignment: Alignment.centerRight,
+                              child: Text("Forgot password?",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: appColors.kBlue2,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: AppButtonsStyle.blueButtonStyle,
+                    onPressed: () {
+                      // Handle login button press
+                      // Typically, you might navigate to another page or perform authentication
+                    },
+                    child: const CustomText(text: 'Log In', fontSize: 24),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
