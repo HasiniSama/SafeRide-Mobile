@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/PopUp.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/customFont.dart';
 import '../../widgets/formField.dart';
@@ -8,6 +10,7 @@ import '../../const/appColors.dart';
 class LoginPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
 
   LoginPage({super.key});
 
@@ -88,8 +91,7 @@ class LoginPage extends StatelessWidget {
                                   const SizedBox(height: 30),
                                   LabeledFormField(
                                     labelText: 'Password',
-                                    controller: emailController,
-                                    keyboardType: TextInputType.emailAddress,
+                                    controller: passController,
                                   ),
                                   const SizedBox(height: 8),
                                   const Align(
@@ -110,7 +112,7 @@ class LoginPage extends StatelessWidget {
                         ElevatedButton(
                           style: AppButtonsStyle.blueButtonStyle,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/home');
+                            loginUser(context);
                           },
                           child: const CustomText(text: 'Log In', fontSize: 24),
                         ),
@@ -123,5 +125,103 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> loginUser(BuildContext context) async {
+    String? validationMessage = validateFormFields();
+
+    if (validationMessage != null) {
+      // Show error popup if validation fails
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return BottomPopupBar(
+            isError: true,
+            imageUrl: 'assets/error.png',
+            title: 'Validation Error!',
+            buttonText: 'Ok',
+            description: validationMessage,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+      return; // Exit function if validation fails
+    }
+
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passController.text
+      );
+      // Login successful
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return BottomPopupBar(
+            imageUrl: 'assets/correct.png',
+            title: 'Login Successful!',
+            buttonText: 'Ok',
+            onPressed: () {
+              Navigator.pushNamed(
+                  context, '/home'); // Navigate to home on button press
+            },
+          );
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = '';
+      if (e.code == 'invalid-credential') {
+        errorMessage = 'Either username or password is incorrect.';
+      } else {
+        print(e.code);
+        errorMessage = 'Login failed. Please try again.';
+      }
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return BottomPopupBar(
+            isError: true,
+            imageUrl: 'assets/error.png',
+            title: 'Login Failed!',
+            buttonText: 'Ok',
+            description: errorMessage,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+      print(errorMessage); // Print error message for debugging
+    } catch (e) {
+      // Other errors
+      print('Error: $e');
+
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return BottomPopupBar(
+            isError: true,
+            imageUrl: 'assets/error.png',
+            title: 'Login Failed!',
+            buttonText: 'Ok',
+            description: 'Error: $e',
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+    }
+  }
+
+  String? validateFormFields() {
+    // Check if any of the required fields are empty
+    if (emailController.text.isEmpty ||
+        passController.text.isEmpty) {
+      return 'All fields are required';
+    }
+    return null;
   }
 }

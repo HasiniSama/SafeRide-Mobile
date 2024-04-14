@@ -150,7 +150,7 @@ class SignUpParentPage extends StatelessWidget {
     );
   }
 
-  void registerNewUser(BuildContext context) async {
+  Future<void> registerNewUser(BuildContext context) async {
 
     // Perform form validation
     String? validationMessage = validateFormFields();
@@ -269,6 +269,6 @@ class SignUpParentPage extends StatelessWidget {
     if (!emailController.text.contains('@')) {
       return 'Invalid email address';
     }
-    return null; 
+    return null;
   }
 }
