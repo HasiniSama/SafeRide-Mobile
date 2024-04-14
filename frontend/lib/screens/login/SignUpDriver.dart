@@ -32,11 +32,12 @@ class SignUpDriverPage extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 30),
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          // Handle button press
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                         style: AppButtonsStyle.transparentButtonStyle,
                         icon: const Icon(
-                          Icons.arrow_forward,
+                          Icons.arrow_back_rounded,
                           color: Colors.white,
                           size: 20,
                         ),
@@ -115,8 +116,7 @@ class SignUpDriverPage extends StatelessWidget {
                           ElevatedButton(
                             style: AppButtonsStyle.blueButtonStyle,
                             onPressed: () {
-                              // Handle login button press
-                              // Typically, you might navigate to another page or perform authentication
+                              Navigator.pushNamed(context, '/sign_up_driver_doc');
                             },
                             child: const CustomText(text: 'Next', fontSize: 24),
                           ),
@@ -124,8 +124,8 @@ class SignUpDriverPage extends StatelessWidget {
                           ElevatedButton(
                             style: AppButtonsStyle.lightBlueButtonStyle,
                             onPressed: () {
-                              // Handle login button press
-                              // Typically, you might navigate to another page or perform authentication
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             },
                             child: const CustomText(text: 'Cancel', fontSize: 24),
                           ),
