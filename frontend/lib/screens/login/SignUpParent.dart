@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/PopUp.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/customFont.dart';
 import '../../widgets/formField.dart';
@@ -116,8 +117,19 @@ class SignUpParentPage extends StatelessWidget {
                           ElevatedButton(
                             style: AppButtonsStyle.blueButtonStyle,
                             onPressed: () {
-                              // Handle login button press
-                              // Typically, you might navigate to another page or perform authentication
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return BottomPopupBar(
+                                    imageUrl: 'assets/correct.png',
+                                    title: 'Registration Complete!',
+                                    buttonText: 'Log In',
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/home');
+                                    },
+                                  );
+                                },
+                              );
                             },
                             child: const CustomText(text: 'Sign Up', fontSize: 24),
                           ),

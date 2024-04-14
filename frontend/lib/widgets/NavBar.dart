@@ -77,7 +77,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return BottomPopupBar();
+                    return BottomPopupBar(
+                      imageUrl: 'assets/location1.png',
+                      title: 'Title Text',
+                      description: 'Description Text',
+                      buttonText: 'Click Me',
+                      onPressed: () {
+                        // Add button functionality here
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    );
                   },
                 );
               },

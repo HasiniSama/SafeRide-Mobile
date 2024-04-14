@@ -110,8 +110,7 @@ class LoginPage extends StatelessWidget {
                         ElevatedButton(
                           style: AppButtonsStyle.blueButtonStyle,
                           onPressed: () {
-                            // Handle login button press
-                            // Typically, you might navigate to another page or perform authentication
+                            Navigator.pushNamed(context, '/home');
                           },
                           child: const CustomText(text: 'Log In', fontSize: 24),
                         ),

@@ -1,70 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
-import 'package:safe_ride_mobile/widgets/buttons.dart';
+
+import 'buttons.dart';
+import 'customFont.dart';
 
 class BottomPopupBar extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String? description;
+  final String buttonText;
+  final VoidCallback? onPressed;
+
+  const BottomPopupBar({
+    Key? key,
+    required this.imageUrl,
+    required this.title,
+    this.description,
+    required this.buttonText,
+    this.onPressed,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: appColors.kBlue2Transparent,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(50.0),
-          topRight: Radius.circular(50.0),
+        color: appColors.kBlue2.withOpacity(1),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25.0),
+          topRight: Radius.circular(25.0),
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height:50),
           Center(
             child: Image.asset(
-              'assets/location1.png',
-              width: 100.0,
-              height: 100.0,
+              imageUrl,
+              width: 150.0,
+              height: 150.0,
             ),
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'Title Text',
-            style: TextStyle(
-              fontSize: 28,
-              color: Colors.white,
-            ),
-          ),
+          const SizedBox(height: 40),
+          CustomText(text: title, fontSize: 28),
           const SizedBox(height: 8),
-          const Text(
-            'Description Text',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 16),
+          if (description != null) ...[
+            const SizedBox(height: 8),
+            CustomText(text: description!, fontSize: 20),
+          ],
+          const SizedBox(height: 50),
           ElevatedButton(
-            onPressed: () {
-              // Add your button's functionality here
-            },
-            style: AppButtonsStyle.popupButtonStyle,
-            child: const Text('Click Me',
-                style: TextStyle(color: appColors.kBlue2, fontSize: 24)),
+            onPressed: onPressed,
+            style: AppButtonsStyle.whiteButtonStyle,
+            child: CustomText(
+              text: buttonText,
+              fontSize: 24,
+              color: appColors.kBlue2,
+            ),
           ),
         ],
       ),
     );
   }
 }
-// BottomPopupBar(),
-
-// ElevatedButton(
-// onPressed: () {
-// // Show the bottom popup bar when the button is pressed
-// showModalBottomSheet(
-// context: context,
-// builder: (BuildContext context) {
-// return BottomPopupBar();
-// },
-// );
-// },
-// child: Text('Open Popup'),
-// ),
