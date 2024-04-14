@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             primarySwatch: Colors.blue,
           ),
           // home: HomePage(logout: logout),
-          home: SignUpDriverDocPage(),
+          home: LoginPage(),
           routes: {
             '/home': (context) => const HomePage(),
             '/parent_profile': (context) => const ParentProfile(),
