@@ -42,7 +42,6 @@ class AppButtonsStyle {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(25.0), // Rounded corners
       side: const BorderSide(
-        color: appColors.kBlue2, // Border color
         width: 2.0, // Border width
       ),
     ),

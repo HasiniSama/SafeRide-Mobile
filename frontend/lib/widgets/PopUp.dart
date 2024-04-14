@@ -10,6 +10,7 @@ class BottomPopupBar extends StatelessWidget {
   final String? description;
   final String buttonText;
   final VoidCallback? onPressed;
+  final bool isError;
 
   const BottomPopupBar({
     Key? key,
@@ -18,14 +19,18 @@ class BottomPopupBar extends StatelessWidget {
     this.description,
     required this.buttonText,
     this.onPressed,
+    this.isError = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    Color backgroundColor = isError ? appColors.kRed1 : appColors.kBlue2;
+
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: appColors.kBlue2.withOpacity(1),
+        color: backgroundColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(25.0),
           topRight: Radius.circular(25.0),
@@ -55,7 +60,7 @@ class BottomPopupBar extends StatelessWidget {
             child: CustomText(
               text: buttonText,
               fontSize: 24,
-              color: appColors.kBlue2,
+              color: backgroundColor,
             ),
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/PopUp.dart';
 import '../../widgets/buttons.dart';
@@ -7,7 +8,13 @@ import '../../widgets/transparentRectangle.dart';
 
 class SignUpParentPage extends StatelessWidget {
 
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController nicController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController confirmPassController = TextEditingController();
 
   SignUpParentPage({super.key});
 
@@ -69,13 +76,13 @@ class SignUpParentPage extends StatelessWidget {
                                     const SizedBox(height: 30),
                                     LabeledFormField(
                                       labelText: 'First Name',
-                                      controller: emailController,
+                                      controller: firstNameController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
                                       labelText: 'Last Name',
-                                      controller: emailController,
+                                      controller: lastNameController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 30),
@@ -87,25 +94,25 @@ class SignUpParentPage extends StatelessWidget {
                                     const SizedBox(height: 30),
                                     LabeledFormField(
                                       labelText: 'NIC No.',
-                                      controller: emailController,
+                                      controller: nicController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
                                       labelText: 'Mobile',
-                                      controller: emailController,
+                                      controller: mobileController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
                                       labelText: 'Password',
-                                      controller: emailController,
+                                      controller: passController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
                                       labelText: 'Confirm Password',
-                                      controller: emailController,
+                                      controller: confirmPassController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                   ],
@@ -117,19 +124,7 @@ class SignUpParentPage extends StatelessWidget {
                           ElevatedButton(
                             style: AppButtonsStyle.blueButtonStyle,
                             onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return BottomPopupBar(
-                                    imageUrl: 'assets/correct.png',
-                                    title: 'Registration Complete!',
-                                    buttonText: 'Log In',
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, '/home');
-                                    },
-                                  );
-                                },
-                              );
+                              registerNewUser(context);
                             },
                             child: const CustomText(text: 'Sign Up', fontSize: 24),
                           ),
@@ -153,5 +148,127 @@ class SignUpParentPage extends StatelessWidget {
           ],
         ),
     );
+  }
+
+  void registerNewUser(BuildContext context) async {
+
+    // Perform form validation
+    String? validationMessage = validateFormFields();
+
+    if (validationMessage != null) {
+      // Show error popup if validation fails
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return BottomPopupBar(
+            isError: true,
+            imageUrl: 'assets/error.png',
+            title: 'Validation Error!',
+            buttonText: 'Ok',
+            description: validationMessage,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+      return; // Exit function if validation fails
+    }
+
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passController.text,
+      );
+      // Registration successful
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              imageUrl: 'assets/correct.png',
+              title: 'Registration Complete!',
+              buttonText: 'Log In',
+              onPressed: () {
+                Navigator.pushNamed(
+                    context, '/home'); // Navigate to home on button press
+              },
+            );
+          },
+      );
+    } on FirebaseAuthException catch (e) {
+      // Firebase registration failed
+      String errorMessage = '';
+      if (e.code == 'weak-password') {
+        errorMessage = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'The account already exists for that email.';
+      } else {
+        errorMessage = 'Registration failed. Please try again.';
+      }
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              isError: true,
+              imageUrl: 'assets/error.png',
+              title: 'Registration Failed!',
+              buttonText: 'Ok',
+              description: errorMessage,
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            );
+          },
+      );
+      print(errorMessage); // Print error message for debugging
+    } catch (e) {
+      // Other errors
+      print('Error: $e');
+
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+                isError: true,
+                imageUrl: 'assets/error.png',
+                title: 'Registration Failed!',
+                buttonText: 'Ok',
+                description: 'Error: $e',
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+            );
+          },
+      );
+    }
+  }
+
+  String? validateFormFields() {
+    // Check if any of the required fields are empty
+    if (firstNameController.text.isEmpty ||
+        lastNameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        nicController.text.isEmpty ||
+        mobileController.text.isEmpty ||
+        passController.text.isEmpty ||
+        confirmPassController.text.isEmpty) {
+      return 'All fields are required';
+    }
+
+    // Check if password and confirm password match
+    if (passController.text != confirmPassController.text) {
+      return 'Passwords do not match';
+    }
+
+    // Check password length
+    if (passController.text.length < 6) {
+      return 'Password should be at least 6 characters';
+    }
+
+    // Check if email contains '@'
+    if (!emailController.text.contains('@')) {
+      return 'Invalid email address';
+    }
+    return null; 
   }
 }
