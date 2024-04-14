@@ -28,6 +28,21 @@ class AppButtonsStyle {
     ),
   );
 
+  static ButtonStyle transparentButtonStyle = ElevatedButton.styleFrom(
+    backgroundColor: Colors.transparent, // Transparent background
+    foregroundColor: Colors.white, // Text color
+    elevation: 0, // No shadow
+    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Padding
+    minimumSize: const Size(113, 36), // Button size
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0), // Rounded corners
+      side: BorderSide(
+        color: Colors.white.withOpacity(0.62), // Border color and opacity
+        width: 1.0, // Border width
+      ),
+    ),
+  );
+
   static ButtonStyle popupButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: Colors.white,
     minimumSize: const Size(260, 50),

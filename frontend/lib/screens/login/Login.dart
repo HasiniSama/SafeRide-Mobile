@@ -26,6 +26,22 @@ class LoginPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
+          Positioned(
+            top: 40, // Adjust this value for vertical positioning
+            right: 20, // Adjust this value for horizontal positioning
+            child: ElevatedButton.icon(
+              onPressed: () {
+                // Handle button press
+              },
+              style: AppButtonsStyle.transparentButtonStyle,
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+                size: 20,
+              ),
+              label: const CustomText(text: "Sign Up", fontSize: 14),
+            ),
+          ),
           SingleChildScrollView(
             child: Center(
               child: Column(
