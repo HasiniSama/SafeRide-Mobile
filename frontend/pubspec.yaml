@@ -42,10 +42,9 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   firebase_core: ^2.25.4
   firebase_database: ^10.4.5
+  firebase_auth: ^4.19.1
   flutter_polyline_points: ^2.0.0
-
   http: ^1.0.0
-  flutter_appauth: ^4.2.1
 
 dev_dependencies:
   flutter_test:

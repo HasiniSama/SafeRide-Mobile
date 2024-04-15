@@ -8,5 +8,6 @@ class appColors {
   static const Color kBlueGra2 = Color(0xFF1975FB);
   static const Color kBlueGreenGra1 = Color(0xFF5ADFAA);
   static const Color kBlueGreenGra2 = Color(0xFF4AC9F2);
+  static const Color kRed1 = Color.fromRGBO(243, 74, 74, 1);
   static const Color kBlue2Transparent = Color.fromRGBO(74, 199, 243, 0.7);
 }

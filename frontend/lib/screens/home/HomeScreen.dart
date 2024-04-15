@@ -15,9 +15,7 @@ import '../../providers/location_provider.dart';
 
 class HomePage extends StatefulWidget {
 
-  final VoidCallback logout;
-
-  const HomePage({required this.logout, Key? key}) : super(key: key);
+  const HomePage({ Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
