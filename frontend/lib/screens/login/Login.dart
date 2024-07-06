@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/PopUp.dart';
 import '../../widgets/buttons.dart';
@@ -155,21 +156,57 @@ class LoginPage extends StatelessWidget {
           email: emailController.text,
           password: passController.text
       );
-      // Login successful
-      showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return BottomPopupBar(
-            imageUrl: 'assets/correct.png',
-            title: 'Login Successful!',
-            buttonText: 'Ok',
-            onPressed: () {
-              Navigator.pushNamed(
-                  context, '/home'); // Navigate to home on button press
+
+      final uid = credential.user!.uid;
+      DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users').child(uid);
+
+      userRef.get().then((DataSnapshot snapshot) {
+        if (snapshot.exists) {
+          Map userData = snapshot.value as Map;
+          String role = userData['role'];
+          if (role == 'parent') {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (role == 'driver') {
+            Navigator.pushReplacementNamed(context, '/driver_home');
+          } else {
+            Navigator.pushReplacementNamed(context, '/error');
+          }
+        } else {
+          // Handle case where user data is not found
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return BottomPopupBar(
+                isError: true,
+                imageUrl: 'assets/error.png',
+                title: 'Login Failed!',
+                buttonText: 'Ok',
+                description: 'User data not found.',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              );
             },
           );
-        },
-      );
+        }
+      }).catchError((error) {
+        // Handle error retrieving user data
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              isError: true,
+              imageUrl: 'assets/error.png',
+              title: 'Login Failed!',
+              buttonText: 'Ok',
+              description: 'Error retrieving user data: $error',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      });
     } on FirebaseAuthException catch (e) {
       String errorMessage = '';
       if (e.code == 'invalid-credential') {
@@ -197,7 +234,6 @@ class LoginPage extends StatelessWidget {
     } catch (e) {
       // Other errors
       print('Error: $e');
-
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {

@@ -217,7 +217,7 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
             title: 'Registration Complete!',
             buttonText: 'Log In',
             onPressed: () {
-              // Navigator.pushNamed(context, '/home'); // Navigate to home on button press
+              Navigator.pushReplacementNamed(context, '/login'); // Navigate to home on button press
             },
           );
         },
