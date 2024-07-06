@@ -190,6 +190,7 @@ class SignUpParentPage extends StatelessWidget {
           "email": emailController.text.trim(),
           "nic": nicController.text.trim(),
           "mobile": mobileController.text.trim(),
+          "role" : 'parent',
         };
         usersRef.child(credential.user!.uid).set(userDataMap);
       }

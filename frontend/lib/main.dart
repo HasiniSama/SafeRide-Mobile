@@ -70,9 +70,24 @@ class _MyAppState extends State<MyApp> {
             '/sign_up_role': (context) => const SignUpRolePage(),
             '/sign_up_parent': (context) => SignUpParentPage(),
             '/sign_up_driver': (context) => SignUpDriverPage(),
-            '/sign_up_driver_doc': (context) => SignUpDriverDocPage(),
             '/firebase_add': (context) => const FirebaseAdd(),
-          }),
+          },
+          onGenerateRoute: (settings) {
+            if (settings.name == '/sign_up_driver_doc') {
+            final args = settings.arguments as Map<String, String>;
+            return MaterialPageRoute(
+              builder: (context) => SignUpDriverDocPage(
+                  firstName: args['firstName']!,
+                  lastName: args['lastName']!,
+                  email: args['email']!,
+                  nic: args['nic']!,
+                  mobile: args['mobile']!,
+                  pass: args['pass']!),
+              );
+            }
+            return null;
+          },
+      ),
     );
   }
 }
