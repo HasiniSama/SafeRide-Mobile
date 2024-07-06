@@ -9,6 +9,7 @@ import 'package:safe_ride_mobile/widgets/IconSquare.dart';
 import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
 import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Assitant/assistantMethods.dart';
 import '../../providers/location_provider.dart';
@@ -22,6 +23,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  String? firstName;
+  String? lastName;
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      firstName = prefs.getString('firstName');
+      lastName = prefs.getString('lastName');
+      email = prefs.getString('email');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +52,14 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            DrawerHeader(
               padding: EdgeInsets.zero,
-              child: ProfileCard(
-                name: 'dtcfyvgubhinj',
-                email: 'tcyvubinm@gmail.com',
-              ),
+              child: firstName != null && lastName != null && email != null
+                  ? ProfileCard(
+                name: '$firstName $lastName',
+                email: email!,
+              )
+              : const Center(child: CircularProgressIndicator()), // Loading indicator while data is being fetched
             ),
              const Center(
               child: SingleChildScrollView(
@@ -44,13 +67,6 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.symmetric(horizontal: 32.0),
                 child: Row(
                   children: <Widget>[
-                    IconSquare(
-                      navigator: '/firebase_add',
-                      icon: Icon(
-                        Icons.fire_hydrant,
-                      ),
-                      name: 'Test Firebase',
-                    ),
                     IconSquare(
                       navigator: '/child_home',
                       icon: Icon(

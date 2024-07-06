@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/widgets/buttons.dart';
 import 'package:safe_ride_mobile/widgets/inputField.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../widgets/PopUp.dart';
 
 class ParentProfile extends StatefulWidget {
   const ParentProfile({
@@ -14,15 +19,36 @@ class ParentProfile extends StatefulWidget {
 }
 
 class _ParentProfileState extends State<ParentProfile> {
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _conformPasswordController =
-      TextEditingController();
+  final TextEditingController _conformPasswordController = TextEditingController();
   final TextEditingController _addressController1 = TextEditingController();
   final TextEditingController _addressController2 = TextEditingController();
+
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? mobile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      firstName = prefs.getString('firstName');
+      lastName = prefs.getString('lastName');
+      email = prefs.getString('email');
+      mobile = prefs.getString('mobile');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,22 +113,22 @@ class _ParentProfileState extends State<ParentProfile> {
                       CustomInputField(
                         controller: _firstNameController,
                         labelText: 'First Name',
-                        exampleText: 'First Name',
+                        exampleText: '$firstName',
                       ),
                       CustomInputField(
                         controller: _lastNameController,
                         labelText: 'Last Name',
-                        exampleText: 'Last Name',
+                        exampleText: '$lastName',
                       ),
                       CustomInputField(
                         controller: _emailController,
                         labelText: 'Email',
-                        exampleText: 'Email',
+                        exampleText: '$email',
                       ),
                       CustomInputField(
                         controller: _mobileController,
                         labelText: ' Mobile',
-                        exampleText: 'Mobile',
+                        exampleText: '$mobile',
                       ),
                       CustomInputField(
                         controller: _passwordController,
@@ -150,7 +176,7 @@ class _ParentProfileState extends State<ParentProfile> {
                         padding: const EdgeInsets.only(top: 60.0, bottom: 20.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            // Add your button's functionality here
+                            updateUserDetails(context);
                           },
                           style: AppButtonsStyle.blueButtonStyle,
                           child: const Text('Save',
@@ -160,7 +186,7 @@ class _ParentProfileState extends State<ParentProfile> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Add your button's functionality here
+                          Navigator.pop(context);
                         },
                         style: AppButtonsStyle.lightBlueButtonStyle,
                         child: const Text('Cancel',
@@ -176,5 +202,108 @@ class _ParentProfileState extends State<ParentProfile> {
         ],
       ),
     );
+  }
+
+  Future<void> updateUserDetails(BuildContext context) async {
+
+    // Create a map to hold updated data
+    Map<String, String> updatedUserData = {};
+
+    // Check if any controller has text and add it to the map
+    if (_firstNameController.text.trim().isNotEmpty) {
+      updatedUserData['firstName'] = _firstNameController.text.trim();
+    }
+    if (_lastNameController.text.trim().isNotEmpty) {
+      updatedUserData['lastName'] = _lastNameController.text.trim();
+    }
+    if (_emailController.text.trim().isNotEmpty) {
+      updatedUserData['email'] = _emailController.text.trim();
+    }
+    if (_mobileController.text.trim().isNotEmpty) {
+      updatedUserData['mobile'] = _mobileController.text.trim();
+    }
+
+    // Check if password is not empty and validate it
+    if (_passwordController.text.trim().isNotEmpty) {
+      if (_passwordController.text != _conformPasswordController.text) {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              isError: true,
+              imageUrl: 'assets/error.png',
+              title: 'Password Error!',
+              buttonText: 'Ok',
+              description: 'Passwords do not match.',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+        return;
+      } else {
+        // updatedUserData['password'] = _passwordController.text.trim();
+      } // Store hashed password instead
+    }
+
+    if (updatedUserData.isNotEmpty) {
+      try {
+        final uid = FirebaseAuth.instance.currentUser!.uid;
+        DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users').child(uid);
+
+        // Update the user data in Firebase
+        await userRef.update(updatedUserData);
+
+        // Show success popup
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              imageUrl: 'assets/correct.png',
+              title: 'Update Successful!',
+              buttonText: 'Ok',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      } catch (e) {
+        // Handle errors
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              isError: true,
+              imageUrl: 'assets/error.png',
+              title: 'Update Failed!',
+              buttonText: 'Ok',
+              description: 'Error: $e',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      }
+    } else {
+      // No updates were made
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return BottomPopupBar(
+            isError: true,
+            imageUrl: 'assets/error.png',
+            title: 'Update Failed!',
+            buttonText: 'Ok',
+            description: 'No changes detected.',
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+    }
   }
 }

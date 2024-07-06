@@ -4,6 +4,7 @@ import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/widgets/IconSquare.dart';
 import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DriverHome extends StatefulWidget {
   const DriverHome({
@@ -15,6 +16,20 @@ class DriverHome extends StatefulWidget {
 }
 
 class _DriverHomeState extends State<DriverHome> {
+
+  String? firstName;
+  String? lastName;
+  String? email;
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      firstName = prefs.getString('firstName');
+      lastName = prefs.getString('lastName');
+      email = prefs.getString('email');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,17 +39,19 @@ class _DriverHomeState extends State<DriverHome> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            DrawerHeader(
               padding: EdgeInsets.zero,
-              child: ProfileCard(
-                name: 'john doe',
-                email: 'trytyjgku@gmail.com',
-              ),
+              child: firstName != null && lastName != null && email != null
+                  ? ProfileCard(
+                name: '$firstName $lastName',
+                email: email!,
+              )
+                  : const Center(child: CircularProgressIndicator()),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
