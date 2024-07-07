@@ -57,12 +57,3 @@ class CustomInputField extends StatelessWidget {
     );
   }
 }
-
-//
-// final TextEditingController _textController2 = TextEditingController();
-//
-//
-// CustomInputField(
-// controller: _textController2,
-// labelText: 'Input 2',
-// ),
