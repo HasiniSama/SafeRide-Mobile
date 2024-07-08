@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_ride_mobile/screens/driver/DriverProfile.dart';
 import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
 import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
 import 'package:safe_ride_mobile/screens/home/HomeScreen.dart';
@@ -60,6 +61,7 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/home': (context) => const HomePage(),
             '/parent_profile': (context) => const ParentProfile(),
+            '/driver_profile': (context) => const DriverProfile(),
             '/driver_home': (context) => const DriverHome(),
             '/absent_calender': (context) => const AbsentCalender(),
             '/child_profile': (context) => const ChildProfile(),

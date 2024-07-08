@@ -63,6 +63,7 @@ class _ChildProfileState extends State<ChildProfile> {
                 ),
                 const ProfileEditCard(
                   url: 'assets/childProfile.jpg',
+                  isEditable: true,
                 ),
                 Container(
                   width: 325.0,
