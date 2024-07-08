@@ -98,6 +98,7 @@ class _ParentProfileState extends State<ParentProfile> {
                 ),
                 const ProfileEditCard(
                   url: 'assets/profile_image.jpg',
+                  isEditable: true,
                 ),
                 Container(
                   width: 325.0,
