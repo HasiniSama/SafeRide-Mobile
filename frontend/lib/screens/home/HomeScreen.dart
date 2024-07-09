@@ -29,29 +29,52 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     
     super.initState();
-    _loadUserData();
-    _loadChildrenData().then((data) {
-      setState(() {
-        children = data;
-      });
+    _loadUserData().then((_) {
+      if (uid != null) {
+        _loadChildrenData();
+      }
     });
   }
 
-  Future<List<Child>> _loadChildrenData() async {
-    
-    List<Child> children = await fetchChildrenFromDatabase(uid!);
-    return children;
+  Future<void> _loadChildrenData() async {
+
+    if (uid != null) {
+      List<Child> fetchedChildren = await fetchChildrenFromDatabase(uid!);
+      setState(() {
+        children = fetchedChildren;
+      });
+      print(children);
+      print("HIIIIIIIIIIIIIIII");
+    }
   }
 
   Future<void> _loadUserData() async {
-    
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      firstName = prefs.getString('firstName');
-      lastName = prefs.getString('lastName');
-      email = prefs.getString('email');
-      uid = prefs.getString('uid');
-    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        firstName = prefs.getString('firstName');
+        lastName = prefs.getString('lastName');
+        email = prefs.getString('email');
+        uid = prefs.getString('uid');
+      });
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
+  }
+
+  Future<List<Child>> fetchChildrenFromDatabase(String parentId) async {
+
+    DatabaseReference childrenRef = FirebaseDatabase.instance.ref('children');
+    DataSnapshot snapshot = await childrenRef.orderByChild('parentId').equalTo(parentId).get();
+
+    List<Child> children = [];
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> childrenData = snapshot.value as Map<dynamic, dynamic>;
+      childrenData.forEach((key, value) {
+        children.add(Child.fromMap(Map<String, dynamic>.from(value)));
+      });
+    }
+    return children;
   }
 
   @override
@@ -215,20 +238,4 @@ class _HomePageState extends State<HomePage> {
       body: MapScreen(),
     );
   }
-
-  Future<List<Child>> fetchChildrenFromDatabase(String parentUid) async {
-
-    DatabaseReference childrenRef = FirebaseDatabase.instance.reference().child('children');
-    DataSnapshot snapshot = await childrenRef.orderByChild('parentUID').equalTo(parentUid).get();
-
-    List<Child> children = [];
-    if (snapshot.exists) {
-      Map<dynamic, dynamic> childrenData = snapshot.value as Map<dynamic, dynamic>;
-      childrenData.forEach((key, value) {
-        children.add(Child.fromMap(value));
-      });
-    }
-    return children;
-  }
-
 }
