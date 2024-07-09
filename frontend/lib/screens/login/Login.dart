@@ -192,6 +192,7 @@ class _LoginPageState extends State<LoginPage> {
           await prefs.setString('email', email);
           await prefs.setString('nic', nic);
           await prefs.setString('mobile', mobile);
+          await prefs.setString('uid', uid);
 
           setState(() {
             _isLoading = false;

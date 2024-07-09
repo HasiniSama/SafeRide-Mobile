@@ -1,18 +1,13 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:safe_ride_mobile/AllWidgets/progressDialog.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/widgets/IconSquare.dart';
 import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
-import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Assitant/assistantMethods.dart';
-import '../../providers/location_provider.dart';
+import '../../models/child.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -27,19 +22,35 @@ class _HomePageState extends State<HomePage> {
   String? firstName;
   String? lastName;
   String? email;
+  String? uid;
+  List<Child> children = [];
 
   @override
   void initState() {
+    
     super.initState();
     _loadUserData();
+    _loadChildrenData().then((data) {
+      setState(() {
+        children = data;
+      });
+    });
+  }
+
+  Future<List<Child>> _loadChildrenData() async {
+    
+    List<Child> children = await fetchChildrenFromDatabase(uid!);
+    return children;
   }
 
   Future<void> _loadUserData() async {
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       firstName = prefs.getString('firstName');
       lastName = prefs.getString('lastName');
       email = prefs.getString('email');
+      uid = prefs.getString('uid');
     });
   }
 
@@ -61,49 +72,26 @@ class _HomePageState extends State<HomePage> {
               )
               : const Center(child: CircularProgressIndicator()), // Loading indicator while data is being fetched
             ),
-             const Center(
+            Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Row(
-                  children: <Widget>[
-                    IconSquare(
-                      navigator: '/child_home',
-                      icon: Icon(
-                        Icons.accessibility,
+                    children: <Widget>[
+                      ...children.map((child) => IconSquare(
+                        navigator: '/child_home',
+                        icon: const Icon(Icons.accessibility),
+                        name: child.name,
+                      )),
+                      const IconSquare(
+                        navigator: '/child_profile',
+                        icon: Icon(
+                          Icons.add_circle,
+                        ),
+                        name: 'Add Child',
                       ),
-                      name: 'Child 01',
-                    ),
-                    IconSquare(
-                      navigator: '/child_profile',
-                      icon: Icon(
-                        Icons.accessibility,
-                      ),
-                      name: 'Child 02',
-                    ),
-                    IconSquare(
-                      navigator: '/child_profile',
-                      icon: Icon(
-                        Icons.accessibility,
-                      ),
-                      name: 'Child 02',
-                    ),
-                  ],
+                    ],
                 ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: const Row(
-                children: <Widget>[
-                  IconSquare(
-                    navigator: '',
-                    icon: Icon(
-                      Icons.add_circle,
-                    ),
-                    name: 'Add Child',
-                  ),
-                ],
               ),
             ),
             Container(
@@ -227,4 +215,20 @@ class _HomePageState extends State<HomePage> {
       body: MapScreen(),
     );
   }
+
+  Future<List<Child>> fetchChildrenFromDatabase(String parentUid) async {
+
+    DatabaseReference childrenRef = FirebaseDatabase.instance.reference().child('children');
+    DataSnapshot snapshot = await childrenRef.orderByChild('parentUID').equalTo(parentUid).get();
+
+    List<Child> children = [];
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> childrenData = snapshot.value as Map<dynamic, dynamic>;
+      childrenData.forEach((key, value) {
+        children.add(Child.fromMap(value));
+      });
+    }
+    return children;
+  }
+
 }

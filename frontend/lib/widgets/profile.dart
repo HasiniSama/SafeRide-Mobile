@@ -52,12 +52,20 @@ class ProfileCard extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: TextStyle(fontSize: 16.0, color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 22.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(height: 8.0), // Add spacing between name and email
+              const SizedBox(height: 5.0), // Add spacing between name and email
               Text(
                 email,
-                style: TextStyle(fontSize: 12.0, color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 14.0, color:
+                    Colors.white,
+                    fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
