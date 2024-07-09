@@ -77,10 +77,12 @@ class ProfileCard extends StatelessWidget {
 
 class ProfileEditCard extends StatelessWidget {
   final String url;
+  final bool isEditable;
 
   const ProfileEditCard({
     super.key,
     required this.url,
+    required this.isEditable
   });
 
   @override
@@ -101,21 +103,22 @@ class ProfileEditCard extends StatelessWidget {
             backgroundImage: AssetImage(url), // Provide your image asset path
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
+        if (isEditable)
+          Container(
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.0),
-              // Background color of the edit icon
               border: Border.all(
                 color: Colors.blue,
                 width: 2.0, // Adjust the border width as needed
-              )),
-          padding: const EdgeInsets.all(4.0),
-          child: const Icon(
-            Icons.edit,
-            color: Colors.blue, // Color of the edit icon
+              ),
+            ),
+            padding: const EdgeInsets.all(4.0),
+            child: const Icon(
+              Icons.edit,
+              color: Colors.blue, // Color of the edit icon
+            ),
           ),
-        ),
       ],
     );
   }

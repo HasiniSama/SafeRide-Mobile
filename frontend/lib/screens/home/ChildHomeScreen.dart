@@ -64,7 +64,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
               child: Row(
                 children: const <Widget>[
                   IconSquare(
-                    navigator: '',
+                    navigator: '/bus_list',
                     icon: Icon(
                       Icons.search,
                     ),

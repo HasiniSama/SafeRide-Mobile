@@ -67,7 +67,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
-            // Profile picture
             const SizedBox(width: 10.0),
             IconButton(
               icon: const Icon(
@@ -84,12 +83,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       description: 'Description Text',
                       buttonText: 'Click Me',
                       onPressed: () {
-                        // Add button functionality here
                         Navigator.pop(context); // Close the bottom sheet
                       },
                     );
                   },
                 );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.exit_to_app), // Logout icon
+              onPressed: () {
+                // Implement logout logic here, e.g., clearing user session
+                // Example: Clear user session and navigate to login screen
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               },
             ),
           ],

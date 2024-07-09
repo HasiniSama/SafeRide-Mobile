@@ -17,6 +17,12 @@ class DriverHome extends StatefulWidget {
 
 class _DriverHomeState extends State<DriverHome> {
 
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData(); // Call the method to load user data
+  }
+
   String? firstName;
   String? lastName;
   String? email;
@@ -60,7 +66,7 @@ class _DriverHomeState extends State<DriverHome> {
                     name: 'Edit Profile',
                   ),
                   IconSquare(
-                    navigator: '',
+                    navigator: '/driver_profile',
                     icon: Icon(
                       Icons.add_circle,
                     ),
