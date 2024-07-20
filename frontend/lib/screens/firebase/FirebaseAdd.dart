@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:safe_ride_mobile/AllWidgets/progressDialog.dart';
-import 'package:safe_ride_mobile/Assitant/assistantMethods.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 
 import '../../providers/location_provider.dart';
 
@@ -14,35 +15,31 @@ class FirebaseAdd extends StatefulWidget {
 }
 
 class _FirebaseAddState extends State<FirebaseAdd> {
-  TextEditingController textController1 = TextEditingController();
-  TextEditingController textController2 = TextEditingController();
-  TextEditingController textController3 = TextEditingController();
-
   Future<void> addButtonPressed(BuildContext context) async {
     final locationProvider = Provider.of<LocationProvider>(context, listen: false);
-
-    String text1 = textController1.text;
-    String text2 = textController2.text;
-    String text3 = textController3.text;
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
     try {
       showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context)
-          {
-            return ProgressDialog(message: 'Saving Data Please Wait ...',);
-          }
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ProgressDialog(message: 'Saving Data Please Wait ...');
+        },
       );
-      await databaseReference.child('items').push().set({
-        'First Name': text1,
-        'Median Name': text2,
-        'Last Name': text3,
+
+      // Load the JSON file
+      String jsonString = await rootBundle.loadString('lib/data/schools.json');
+      Map<String, dynamic> jsonData = jsonDecode(jsonString);
+
+      // Upload data to Firebase Realtime Database
+      jsonData.forEach((district, schools) async {
+        await databaseReference.child('schoolsBaseOnDistricts').child(district).set({
+          'schools': schools
+        });
       });
-      // String address = await AssistantMethods.searchCordinateAddress(locationProvider.currentPosition!);
+
       Navigator.pop(context);
-      // print(address);
       Navigator.pushReplacementNamed(context, '/home');
     } catch (error) {
       Navigator.pop(context);
@@ -61,22 +58,10 @@ class _FirebaseAddState extends State<FirebaseAdd> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: textController1,
-              decoration: InputDecoration(labelText: 'Text Area 1'),
-            ),
-            TextField(
-              controller: textController2,
-              decoration: InputDecoration(labelText: 'Text Area 2'),
-            ),
-            TextField(
-              controller: textController3,
-              decoration: InputDecoration(labelText: 'Text Area 3'),
-            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => addButtonPressed(context),
-              child: Text('Add'),
+              child: Text('Upload JSON Data to Firebase'),
             ),
           ],
         ),

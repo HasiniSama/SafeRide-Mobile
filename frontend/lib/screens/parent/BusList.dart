@@ -1,8 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_ride_mobile/Assitant/assistantMethods.dart';
 import 'package:safe_ride_mobile/Assitant/locationData.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import '../../AllWidgets/ListWidget.dart';
+import '../../providers/selected.child.dart';
 
 class BusList extends StatefulWidget {
   const BusList({Key? key}) : super(key: key);
@@ -14,8 +17,11 @@ class BusList extends StatefulWidget {
 class _BusListState extends State<BusList> {
   final TextEditingController _endLocationController = TextEditingController();
   late List<Map<String, dynamic>> suitableDrivers = [];
-  String selectedDistrict = 'Ampara';
   final FocusNode _endLocationFocus = FocusNode();
+
+  String selectedDistrict = 'Ampara';
+  List<String> schoolsList = [];
+  String? selectedSchool;
 
   @override
   void dispose() {
@@ -25,6 +31,8 @@ class _BusListState extends State<BusList> {
 
   @override
   Widget build(BuildContext context) {
+    final String? selectedChild = Provider.of<SelectedChildProvider>(context, listen: false).selectedChildId;
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -122,7 +130,8 @@ class _BusListState extends State<BusList> {
                             isExpanded: true,
                             onChanged: (String? newValue) {
                               setState(() {
-                                selectedDistrict = newValue ?? 'Ampara';
+                                selectedDistrict = newValue!;
+                                _fetchSchools();
                               });
                             },
                           ),
@@ -137,20 +146,24 @@ class _BusListState extends State<BusList> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          child: TextFormField(
-                            controller: _endLocationController,
-                            focusNode: _endLocationFocus, // Attach focusNode
-                            decoration: InputDecoration(
-                              hintText: 'School',
-                              hintStyle: const TextStyle(
-                                fontSize: 16.0,
-                                color: appColors.kBlue2,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
+                          child: DropdownButton<String>(
+                            value: selectedSchool,
+                            hint: const Text('Select School'),
+                            items: schoolsList.map((String school) {
+                              return DropdownMenuItem<String>(
+                                value: school,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Text(school),
+                                ),
+                              );
+                            }).toList(),
+                            isExpanded: true,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedSchool = newValue;
+                              });
+                            },
                           ),
                         ),
                       ),
@@ -160,13 +173,13 @@ class _BusListState extends State<BusList> {
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: () async {
-                              // Add your button's functionality here
-                              List<Map<String, dynamic>> drivers = await AssistantMethods.findSuitableDrivers(selectedDistrict, _endLocationController.text);
-                              setState(() {
-                                _endLocationFocus.unfocus(); // Unfocus the focusNode
-                                suitableDrivers = drivers;
-                                print('------------------$suitableDrivers');
-                              });
+                              if(selectedSchool != null){
+                                List<Map<String, dynamic>> drivers = await AssistantMethods.findSuitableDrivers(selectedDistrict, selectedSchool!);
+                                setState(() {
+                                  _endLocationFocus.unfocus();
+                                  suitableDrivers = drivers;
+                                });
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: appColors.kBlue2,
@@ -244,11 +257,11 @@ class _BusListState extends State<BusList> {
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () {
-                                        // Add your functionality here
+                                      onPressed: () async {
+                                        await _updateChild(selectedChild!, driverData['busId']);
                                         Navigator.of(context).pop();
                                       },
-                                      child: const Text('Add vehicle'),
+                                      child:  const Text('Add vehicle'),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -286,5 +299,69 @@ class _BusListState extends State<BusList> {
         ],
       ),
     );
+  }
+
+  Future<void> _fetchSchools() async {
+    DatabaseReference schoolsRef = FirebaseDatabase.instance.reference()
+        .child('schoolsBaseOnDistricts')
+        .child(selectedDistrict)
+        .child('schools');
+
+    schoolsRef.once().then((DatabaseEvent event) {
+      DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        List<String> fetchedSchoolsList = List<String>.from(snapshot.value as List<dynamic>);
+        setState(() {
+          schoolsList = fetchedSchoolsList;
+          selectedSchool = schoolsList.isNotEmpty ? schoolsList.first : null;
+        });
+      } else {
+        setState(() {
+          schoolsList = [];
+          selectedSchool = '';
+        });
+      }
+    }).catchError((error) {
+      print('Error fetching schools: $error');
+    });
+  }
+
+  Future<void> _updateChild(String childKey, String busId) async {
+    try {
+      DatabaseReference childRef = FirebaseDatabase.instance.reference()
+          .child('children')
+          .child(childKey);
+
+      await childRef.update({
+        'selectedBusId': busId,
+      });
+
+      DatabaseReference busRef = FirebaseDatabase.instance.reference()
+          .child('busses')
+          .child(busId);
+
+      DataSnapshot busSnapshot = await busRef.child('children').get();
+      List<dynamic> childrenList = [];
+      if (busSnapshot.exists && busSnapshot.value != null) {
+        childrenList = List<dynamic>.from(busSnapshot.value as List<dynamic>);
+      }
+
+      if (!childrenList.contains(childKey)) {
+        childrenList.add(childKey);
+      }
+
+      await busRef.update({
+        'children': childrenList,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bus assigned successfully!')),
+      );
+    } catch (e) {
+      print('Error updating child record: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to assign bus.')),
+      );
+    }
   }
 }

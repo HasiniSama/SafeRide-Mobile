@@ -204,6 +204,12 @@ class SignUpDriverPage extends StatelessWidget {
       return 'Password should be at least 6 characters';
     }
 
+
+
+
+
+
+
     // Check if email contains '@'
     if (!emailController.text.contains('@')) {
       return 'Invalid email address';
