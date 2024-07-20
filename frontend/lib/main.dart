@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_ride_mobile/providers/selected.child.dart';
 import 'package:safe_ride_mobile/screens/driver/DriverProfile.dart';
 import 'package:safe_ride_mobile/screens/home/ChildHomeScreen.dart';
 import 'package:safe_ride_mobile/screens/home/DriverHome.dart';
@@ -50,7 +51,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => LocationProvider(),
           child: MapScreen(),
-        )
+        ),
+        ChangeNotifierProvider(create: (_) => SelectedChildProvider())
       ],
       child: MaterialApp(
         title: 'Safe Ride App',

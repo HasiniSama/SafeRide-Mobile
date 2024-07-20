@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
 import 'package:safe_ride_mobile/widgets/IconSquare.dart';
 import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
+
+import '../../providers/selected.child.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({
@@ -15,6 +18,16 @@ class ChildHomeScreen extends StatefulWidget {
 }
 
 class _ChildHomeScreenState extends State<ChildHomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final childId = ModalRoute.of(context)!.settings.arguments as String;
+      Provider.of<SelectedChildProvider>(context, listen: false).selectChild(childId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +46,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
@@ -43,11 +56,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                     name: 'Home',
                   ),
                   IconSquare(
-                    navigator: '',
+                    navigator: '/firebase_add',
                     icon: Icon(
                       Icons.add_circle,
                     ),
-                    name: 'School',
+                    name: 'Schoolsss',
                   ),
                 ],
               ),
@@ -61,8 +74,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                 )),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '/bus_list',
                     icon: Icon(

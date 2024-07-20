@@ -5,18 +5,22 @@ class IconSquare extends StatelessWidget {
   final String navigator;
   final Icon icon;
   final String name;
+  final String? childId;
 
-  const IconSquare(
-      {super.key,
+  const IconSquare({
+    super.key,
       required this.navigator,
       required this.icon,
-      required this.name});
+      required this.name,
+      this.childId,
+      });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, navigator);
+
+        Navigator.pushNamed(context, navigator, arguments: childId);
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (context) => ProfileDetailPage(),
         // ));

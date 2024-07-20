@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         children = fetchedChildren;
       });
-      print(children);
+      print(children.first.id);
       print("HIIIIIIIIIIIIIIII");
     }
   }
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
     if (snapshot.exists) {
       Map<dynamic, dynamic> childrenData = snapshot.value as Map<dynamic, dynamic>;
       childrenData.forEach((key, value) {
-        children.add(Child.fromMap(Map<String, dynamic>.from(value)));
+        children.add(Child.fromMap(Map<String, dynamic>.from(value), key));
       });
     }
     return children;
@@ -105,6 +105,7 @@ class _HomePageState extends State<HomePage> {
                         navigator: '/child_home',
                         icon: const Icon(Icons.accessibility),
                         name: child.name,
+                        childId: child.id
                       )),
                       const IconSquare(
                         navigator: '/child_profile',

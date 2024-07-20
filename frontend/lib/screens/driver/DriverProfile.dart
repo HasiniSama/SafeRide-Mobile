@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:safe_ride_mobile/Assitant/assistantMethods.dart';
 import 'package:safe_ride_mobile/Assitant/locationData.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
@@ -19,23 +20,24 @@ class DriverProfile extends StatefulWidget {
 }
 
 class _DriverProfileState extends State<DriverProfile> {
-  final TextEditingController _schoolsController = TextEditingController();
-
   final TextEditingController _startLocationController = TextEditingController();
   final TextEditingController _endLocationController = TextEditingController();
-
 
   late Map<String, dynamic> _startingPoint;
   late Map<String, dynamic> _endingPoint;
 
   String selectedDistrict = 'Ampara';
-  late Map<String, dynamic> selectedStartLocation;
-  late Map<String, dynamic> selectedEndLocation;
+  List<String> selectedSchools = [];
+  List<String> schoolsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchSchools();  // Fetch initial schools for the default district
+  }
 
   @override
   Widget build(BuildContext context) {
-    // selectedDistrict = districts.first;
-
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -117,14 +119,41 @@ class _DriverProfileState extends State<DriverProfile> {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedDistrict = newValue!;
+                            _fetchSchools();  // Fetch schools based on the selected district
                           });
                         },
                       ),
                       const SizedBox(height: 20),
-                      CustomInputField(
-                        controller: _schoolsController,
-                        labelText: 'Schools Covered',
-                        exampleText: 'Comma-separated list',
+                      const Text(
+                        'Schools Covered',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      MultiSelectDialogField(
+                        items: schoolsList.map((String school) {
+                          return MultiSelectItem<String>(school, school);
+                        }).toList(),
+                        title: const Text("Schools"),
+                        selectedColor: Colors.blue,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        buttonIcon: const Icon(
+                          Icons.school,
+                          color: Colors.blue,
+                        ),
+                        buttonText: const Text(
+                          "Select Schools",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onConfirm: (results) {
+                          setState(() {
+                            selectedSchools = results;
+                          });
+                        },
                       ),
                       const SizedBox(height: 20),
                       TypeAheadField<String>(
@@ -203,39 +232,41 @@ class _DriverProfileState extends State<DriverProfile> {
     );
   }
 
-  Future<void> _saveDriverData(BuildContext context) async {
-    // if (
-    //     _busNumberController.text.isEmpty ||
-    //     _busCapacityController.text.isEmpty ||
-    //     _schoolsController.text.isEmpty) {
-    //   showModalBottomSheet(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return BottomPopupBar(
-    //         isError: true,
-    //         imageUrl: 'assets/error.png',
-    //         title: 'Incomplete Data',
-    //         buttonText: 'Ok',
-    //         description: 'Please fill in all the fields.',
-    //         onPressed: () {
-    //           Navigator.pop(context);
-    //         },
-    //       );
-    //     },
-    //   );
-    //   return;
-    // }
+  Future<void> _fetchSchools() async {
+    DatabaseReference schoolsRef = FirebaseDatabase.instance.reference()
+        .child('schoolsBaseOnDistricts')
+        .child(selectedDistrict)
+        .child('schools');
 
+    schoolsRef.once().then((DatabaseEvent event) {
+      DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        List<String> fetchedSchoolsList = List<String>.from(snapshot.value as List<dynamic>);
+        setState(() {
+          schoolsList = fetchedSchoolsList;
+          selectedSchools = [];
+        });
+      } else {
+        setState(() {
+          schoolsList = [];
+          selectedSchools = [];
+        });
+      }
+    }).catchError((error) {
+      print('Error fetching schools: $error');
+    });
+  }
+
+  Future<void> _saveDriverData(BuildContext context) async {
     try {
-      DatabaseReference driverRef =
-      FirebaseDatabase.instance.reference().child('busses');
+      DatabaseReference driverRef = FirebaseDatabase.instance.reference().child('busses');
 
       Map<String, dynamic> driverData = {
         'driverId': FirebaseAuth.instance.currentUser!.uid,
         'district': selectedDistrict,
         'busNumber': 2342,
         'busCapacity': 1,
-        'schools': _schoolsController.text.trim().split(',').map((s) => s.trim()).toList(),
+        'schools': selectedSchools,
         'startingPoint': {
           'latitude': _startingPoint['lat'],
           'longitude': _startingPoint['lng'],
