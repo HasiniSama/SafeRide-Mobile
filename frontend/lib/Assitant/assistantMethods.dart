@@ -106,8 +106,11 @@ class AssistantMethods
 
   static Future<List<Map<String, dynamic>>> findSuitableDrivers(String district, String school) async {
     await Geolocator.requestPermission();
+
+    // Reference to the 'busses' node in Firebase
     DatabaseReference driversRef = FirebaseDatabase.instance.reference().child('busses');
 
+    // Query to find busses by district
     DatabaseEvent event = await driversRef.orderByChild('district').equalTo(district).once();
     DataSnapshot snapshot = event.snapshot;
 
@@ -118,11 +121,13 @@ class AssistantMethods
 
       drivers.forEach((key, value) {
         Map<String, dynamic> driverData = Map<String, dynamic>.from(value);
+        driverData['busId'] = key;
 
         List<dynamic> schools = driverData['schools'] ?? [];
         if (!schools.contains(school)) return;
 
         suitableDrivers.add(driverData);
+
         // TODO get pro (LatLng childStartingLocation)
         // double distanceToStartingPoint = calculateDistance(
         //   childStartingLocation.latitude, childStartingLocation.longitude,
