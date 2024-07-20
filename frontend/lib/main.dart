@@ -57,8 +57,8 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
-        // home: LoginPage(),
+        // home: HomePage(logout: logout),
+        home: LoginPage(),
         routes: {
           '/home': (context) => const HomePage(),
           '/parent_profile': (context) => const ParentProfile(),
