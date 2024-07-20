@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                     name: 'Transection History',
                   ),
                   IconSquare(
-                    navigator: '/payment',
+                    navigator: '/payhere',
                     icon: Icon(
                       Icons.account_balance,
                     ),
