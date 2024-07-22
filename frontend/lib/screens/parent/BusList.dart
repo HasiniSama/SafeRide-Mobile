@@ -5,6 +5,7 @@ import 'package:safe_ride_mobile/Assitant/assistantMethods.dart';
 import 'package:safe_ride_mobile/Assitant/locationData.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import '../../AllWidgets/ListWidget.dart';
+import '../../models/school.dart';
 import '../../providers/selected.child.dart';
 
 class BusList extends StatefulWidget {
@@ -20,13 +21,19 @@ class _BusListState extends State<BusList> {
   final FocusNode _endLocationFocus = FocusNode();
 
   String selectedDistrict = 'Ampara';
-  List<String> schoolsList = [];
-  String? selectedSchool;
+  List<School> schoolsList = [];
+  School? selectedSchool;
 
   @override
   void dispose() {
     _endLocationFocus.dispose(); // Dispose the FocusNode
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchSchools();
   }
 
   @override
@@ -146,20 +153,20 @@ class _BusListState extends State<BusList> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          child: DropdownButton<String>(
+                          child: DropdownButton<School>(
                             value: selectedSchool,
                             hint: const Text('Select School'),
-                            items: schoolsList.map((String school) {
-                              return DropdownMenuItem<String>(
+                            items: schoolsList.map((School school) {
+                              return DropdownMenuItem<School>(
                                 value: school,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(school),
+                                  child: Text(school.name),
                                 ),
                               );
                             }).toList(),
                             isExpanded: true,
-                            onChanged: (String? newValue) {
+                            onChanged: (School? newValue) {
                               setState(() {
                                 selectedSchool = newValue;
                               });
@@ -304,21 +311,27 @@ class _BusListState extends State<BusList> {
   Future<void> _fetchSchools() async {
     DatabaseReference schoolsRef = FirebaseDatabase.instance.reference()
         .child('schoolsBaseOnDistricts')
-        .child(selectedDistrict)
-        .child('schools');
-
+        .child(selectedDistrict);
     schoolsRef.once().then((DatabaseEvent event) {
       DataSnapshot snapshot = event.snapshot;
       if (snapshot.value != null) {
-        List<String> fetchedSchoolsList = List<String>.from(snapshot.value as List<dynamic>);
-        setState(() {
-          schoolsList = fetchedSchoolsList;
-          selectedSchool = schoolsList.isNotEmpty ? schoolsList.first : null;
-        });
+        var snapshotValue = snapshot.value;
+        if (snapshotValue is List) {
+          List<School> fetchedSchoolsList = snapshotValue
+              .whereType<Map>()
+              .map((item) => School.fromMap(item))
+              .toList();
+          setState(() {
+            schoolsList = fetchedSchoolsList;
+            selectedSchool = schoolsList.isNotEmpty ? schoolsList.first : null;
+          });
+        } else {
+          print('Error: Data is not in the expected format.');
+        }
       } else {
         setState(() {
           schoolsList = [];
-          selectedSchool = '';
+          selectedSchool = null;
         });
       }
     }).catchError((error) {

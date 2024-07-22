@@ -8,6 +8,8 @@ import 'package:safe_ride_mobile/const/appKeys.dart';
 import 'package:safe_ride_mobile/models/directionDetails.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/school.dart';
+
 class AssistantMethods
 {
   static Future<String> searchCordinateAddress(Position position) async
@@ -104,7 +106,7 @@ class AssistantMethods
     return Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
   }
 
-  static Future<List<Map<String, dynamic>>> findSuitableDrivers(String district, String school) async {
+  static Future<List<Map<String, dynamic>>> findSuitableDrivers(String district, School school) async {
     await Geolocator.requestPermission();
 
     // Reference to the 'busses' node in Firebase
@@ -122,12 +124,18 @@ class AssistantMethods
       drivers.forEach((key, value) {
         Map<String, dynamic> driverData = Map<String, dynamic>.from(value);
         driverData['busId'] = key;
-
         List<dynamic> schools = driverData['schools'] ?? [];
-        if (!schools.contains(school)) return;
+
+        List<School> driverSchools = schools
+            .whereType<Map>()
+            .map((item) => School.fromMap(item))
+            .toList();
+
+        if (!driverSchools.contains(school)){
+          return;
+        }
 
         suitableDrivers.add(driverData);
-
         // TODO get pro (LatLng childStartingLocation)
         // double distanceToStartingPoint = calculateDistance(
         //   childStartingLocation.latitude, childStartingLocation.longitude,

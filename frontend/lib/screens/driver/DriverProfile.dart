@@ -9,6 +9,7 @@ import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/widgets/buttons.dart';
 import 'package:safe_ride_mobile/widgets/inputField.dart';
 
+import '../../models/school.dart';
 import '../../widgets/PopUp.dart';
 import '../../widgets/profile.dart';
 
@@ -27,8 +28,8 @@ class _DriverProfileState extends State<DriverProfile> {
   late Map<String, dynamic> _endingPoint;
 
   String selectedDistrict = 'Ampara';
-  List<String> selectedSchools = [];
-  List<String> schoolsList = [];
+  List<School> selectedSchools = [];
+  List<School> schoolsList = [];
 
   @override
   void initState() {
@@ -129,8 +130,8 @@ class _DriverProfileState extends State<DriverProfile> {
                         style: TextStyle(fontSize: 16),
                       ),
                       MultiSelectDialogField(
-                        items: schoolsList.map((String school) {
-                          return MultiSelectItem<String>(school, school);
+                        items: schoolsList.map((School school) {
+                          return MultiSelectItem<School>(school, school.name);
                         }).toList(),
                         title: const Text("Schools"),
                         selectedColor: Colors.blue,
@@ -235,17 +236,24 @@ class _DriverProfileState extends State<DriverProfile> {
   Future<void> _fetchSchools() async {
     DatabaseReference schoolsRef = FirebaseDatabase.instance.reference()
         .child('schoolsBaseOnDistricts')
-        .child(selectedDistrict)
-        .child('schools');
+        .child(selectedDistrict);
 
     schoolsRef.once().then((DatabaseEvent event) {
       DataSnapshot snapshot = event.snapshot;
       if (snapshot.value != null) {
-        List<String> fetchedSchoolsList = List<String>.from(snapshot.value as List<dynamic>);
-        setState(() {
-          schoolsList = fetchedSchoolsList;
-          selectedSchools = [];
-        });
+        var snapshotValue = snapshot.value;
+        if (snapshotValue is List) {
+          List<School> fetchedSchoolsList = snapshotValue
+              .whereType<Map>()
+              .map((item) => School.fromMap(item))
+              .toList();
+          setState(() {
+            schoolsList = fetchedSchoolsList;
+            selectedSchools = [];
+          });
+        } else {
+          print('Error: Data is not in the expected format.');
+        }
       } else {
         setState(() {
           schoolsList = [];
@@ -260,13 +268,14 @@ class _DriverProfileState extends State<DriverProfile> {
   Future<void> _saveDriverData(BuildContext context) async {
     try {
       DatabaseReference driverRef = FirebaseDatabase.instance.reference().child('busses');
+      List<Map<String, dynamic>> selectedSchoolsAsMaps = selectedSchools.map((school) => school.toMap()).toList();
 
       Map<String, dynamic> driverData = {
         'driverId': FirebaseAuth.instance.currentUser!.uid,
         'district': selectedDistrict,
         'busNumber': 2342,
         'busCapacity': 1,
-        'schools': selectedSchools,
+        'schools': selectedSchoolsAsMaps,
         'startingPoint': {
           'latitude': _startingPoint['lat'],
           'longitude': _startingPoint['lng'],
@@ -294,6 +303,7 @@ class _DriverProfileState extends State<DriverProfile> {
         },
       );
     } catch (e) {
+      print(e);
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
