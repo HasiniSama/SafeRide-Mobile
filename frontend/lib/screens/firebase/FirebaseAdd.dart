@@ -34,9 +34,7 @@ class _FirebaseAddState extends State<FirebaseAdd> {
 
       // Upload data to Firebase Realtime Database
       jsonData.forEach((district, schools) async {
-        await databaseReference.child('schoolsBaseOnDistricts').child(district).set({
-          'schools': schools
-        });
+        await databaseReference.child('schoolsBaseOnDistricts').child(district).set(schools);
       });
 
       Navigator.pop(context);

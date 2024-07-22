@@ -1,177 +1,177 @@
 {
   "Colombo": [
-    "Royal College",
-    "Ananda College",
-    "Devi Balika Vidyalaya",
-    "D. S. Senanayake College",
-    "St. Bridget's Convent"
+    {"name": "Royal College", "lat": 6.9271, "lng": 79.8612},
+    {"name": "Ananda College", "lat": 6.9149, "lng": 79.9712},
+    {"name": "Devi Balika Vidyalaya", "lat": 6.9271, "lng": 79.8577},
+    {"name": "D. S. Senanayake College", "lat": 6.9157, "lng": 79.8575},
+    {"name": "St. Bridget's Convent", "lat": 6.9098, "lng": 79.8648}
   ],
   "Gampaha": [
-    "Bandaranaike College",
-    "Holy Cross College",
-    "Lyceum International School",
-    "Regent International College",
-    "St. Joseph's College"
+    {"name": "Bandaranaike College", "lat": 7.0916, "lng": 80.0141},
+    {"name": "Holy Cross College", "lat": 7.0886, "lng": 79.9997},
+    {"name": "Lyceum International School", "lat": 7.0844, "lng": 80.0002},
+    {"name": "Regent International College", "lat": 7.0934, "lng": 79.9997},
+    {"name": "St. Joseph's College", "lat": 7.0834, "lng": 80.0035}
   ],
   "Kalutara": [
-    "Holy Family Convent",
-    "Kalutara Vidyalaya",
-    "St. Mary's College",
-    "Vidyarathna University College",
-    "Tissa Central College"
+    {"name": "Holy Family Convent", "lat": 6.5889, "lng": 79.9604},
+    {"name": "Kalutara Vidyalaya", "lat": 6.5838, "lng": 79.9655},
+    {"name": "St. Mary's College", "lat": 6.5848, "lng": 79.9615},
+    {"name": "Vidyarathna University College", "lat": 6.5903, "lng": 79.9638},
+    {"name": "Tissa Central College", "lat": 6.5871, "lng": 79.9612}
   ],
   "Kandy": [
-    "Trinity College",
-    "Mahinda College",
-    "Hillwood College",
-    "St. Sylvester's College",
-    "Kingswood College"
+    {"name": "Trinity College", "lat": 7.2924, "lng": 80.6379},
+    {"name": "Mahinda College", "lat": 7.2942, "lng": 80.6436},
+    {"name": "Hillwood College", "lat": 7.2931, "lng": 80.6337},
+    {"name": "St. Sylvester's College", "lat": 7.2937, "lng": 80.6369},
+    {"name": "Kingswood College", "lat": 7.2899, "lng": 80.6335}
   ],
   "Matale": [
-    "Christ Church College",
-    "St. Thomas' College",
-    "Matale Hindu College",
-    "Vijaya College",
-    "St. Anthony's Girls' College"
+    {"name": "Christ Church College", "lat": 7.4693, "lng": 80.6215},
+    {"name": "St. Thomas' College", "lat": 7.4643, "lng": 80.6249},
+    {"name": "Matale Hindu College", "lat": 7.4659, "lng": 80.6221},
+    {"name": "Vijaya College", "lat": 7.4727, "lng": 80.6204},
+    {"name": "St. Anthony's Girls' College", "lat": 7.4702, "lng": 80.6189}
   ],
   "Nuwara Eliya": [
-    "Holy Trinity College",
-    "Nuwara Eliya Tamil Maha Vidyalayam",
-    "Gamini Central College",
-    "Highlands College",
-    "Victoria College"
+    {"name": "Holy Trinity College", "lat": 6.9678, "lng": 80.7662},
+    {"name": "Nuwara Eliya Tamil Maha Vidyalayam", "lat": 6.9664, "lng": 80.7659},
+    {"name": "Gamini Central College", "lat": 6.9725, "lng": 80.7678},
+    {"name": "Highlands College", "lat": 6.9689, "lng": 80.7645},
+    {"name": "Victoria College", "lat": 6.9701, "lng": 80.7671}
   ],
   "Galle": [
-    "Richmond College",
-    "Mahinda College",
-    "Southlands College",
-    "Sudarshana College",
-    "Sangamitta College"
+    {"name": "Richmond College", "lat": 6.0351, "lng": 80.2188},
+    {"name": "Mahinda College", "lat": 6.0355, "lng": 80.2145},
+    {"name": "Southlands College", "lat": 6.0364, "lng": 80.2155},
+    {"name": "Sudarshana College", "lat": 6.0360, "lng": 80.2173},
+    {"name": "Sangamitta College", "lat": 6.0357, "lng": 80.2195}
   ],
   "Matara": [
-    "Rahula College",
-    "St. Thomas' College",
-    "Sujatha Vidyalaya",
-    "Matara Central College",
-    "St. Mary's Convent"
+    {"name": "Rahula College", "lat": 5.9450, "lng": 80.5393},
+    {"name": "St. Thomas' College", "lat": 5.9462, "lng": 80.5350},
+    {"name": "Sujatha Vidyalaya", "lat": 5.9467, "lng": 80.5382},
+    {"name": "Matara Central College", "lat": 5.9455, "lng": 80.5408},
+    {"name": "St. Mary's Convent", "lat": 5.9448, "lng": 80.5371}
   ],
   "Hambantota": [
-    "Tangalle National College",
-    "Devi Balika Vidyalaya",
-    "Hambantota Maha Vidyalaya",
-    "D. A. Rajapaksa College",
-    "Gamini Maha Vidyalaya"
+    {"name": "Tangalle National College", "lat": 6.0241, "lng": 80.7912},
+    {"name": "Devi Balika Vidyalaya", "lat": 6.0222, "lng": 80.7924},
+    {"name": "Hambantota Maha Vidyalaya", "lat": 6.1219, "lng": 81.1211},
+    {"name": "D. A. Rajapaksa College", "lat": 6.0249, "lng": 80.7940},
+    {"name": "Gamini Maha Vidyalaya", "lat": 6.0242, "lng": 80.7937}
   ],
   "Jaffna": [
-    "Jaffna Central College",
-    "St. John's College",
-    "Jaffna Hindu College",
-    "Vembadi Girls' High School",
-    "St. Patrick's College"
+    {"name": "Jaffna Central College", "lat": 9.6656, "lng": 80.0228},
+    {"name": "St. John's College", "lat": 9.6657, "lng": 80.0256},
+    {"name": "Jaffna Hindu College", "lat": 9.6647, "lng": 80.0215},
+    {"name": "Vembadi Girls' High School", "lat": 9.6651, "lng": 80.0219},
+    {"name": "St. Patrick's College", "lat": 9.6649, "lng": 80.0260}
   ],
   "Kilinochchi": [
-    "Kilinochchi Maha Vidyalayam",
-    "Kokavil Hindu College",
-    "Puthukkudiyiruppu Central College",
-    "Skandavarodaya College",
-    "Union College"
+    {"name": "Kilinochchi Maha Vidyalayam", "lat": 9.3844, "lng": 80.3986},
+    {"name": "Kokavil Hindu College", "lat": 9.3849, "lng": 80.3967},
+    {"name": "Puthukkudiyiruppu Central College", "lat": 9.3852, "lng": 80.3951},
+    {"name": "Skandavarodaya College", "lat": 9.3836, "lng": 80.3960},
+    {"name": "Union College", "lat": 9.3841, "lng": 80.3973}
   ],
   "Mannar": [
-    "St. Xavier's Boys' College",
-    "St. Xavier's Girls' College",
-    "Vidyamandiraya",
-    "Mannar Central College",
-    "Murunkan Central College"
+    {"name": "St. Xavier's Boys' College", "lat": 8.9856, "lng": 79.9021},
+    {"name": "St. Xavier's Girls' College", "lat": 8.9862, "lng": 79.9044},
+    {"name": "Vidyamandiraya", "lat": 8.9868, "lng": 79.9019},
+    {"name": "Mannar Central College", "lat": 8.9853, "lng": 79.9036},
+    {"name": "Murunkan Central College", "lat": 8.9851, "lng": 79.9023}
   ],
   "Vavuniya": [
-    "Vavuniya Tamil Madhya Maha Vidyalayam",
-    "Vavuniya North Hindu College",
-    "Saivapragasa Ladies' College",
-    "Vavuniya Muslim Maha Vidyalaya",
-    "Mahamaya Girls' College"
+    {"name": "Vavuniya Tamil Madhya Maha Vidyalayam", "lat": 8.7513, "lng": 80.4974},
+    {"name": "Vavuniya North Hindu College", "lat": 8.7499, "lng": 80.4976},
+    {"name": "Saivapragasa Ladies' College", "lat": 8.7506, "lng": 80.4968},
+    {"name": "Vavuniya Muslim Maha Vidyalaya", "lat": 8.7510, "lng": 80.4982},
+    {"name": "Mahamaya Girls' College", "lat": 8.7502, "lng": 80.4979}
   ],
   "Mullaitivu": [
-    "Mullaitivu Maha Vidyalaya",
-    "Oddusuddan Maha Vidyalaya",
-    "Puthukudiyiruppu Central College",
-    "Mulliyawalai Tamil Vidyalayam",
-    "Maritimepattu Tamil Maha Vidyalaya"
+    {"name": "Mullaitivu Maha Vidyalaya", "lat": 9.2674, "lng": 80.8122},
+    {"name": "Oddusuddan Maha Vidyalaya", "lat": 9.2663, "lng": 80.8130},
+    {"name": "Puthukudiyiruppu Central College", "lat": 9.2667, "lng": 80.8114},
+    {"name": "Mulliyawalai Tamil Vidyalayam", "lat": 9.2671, "lng": 80.8129},
+    {"name": "Maritimepattu Tamil Maha Vidyalaya", "lat": 9.2669, "lng": 80.8119}
   ],
   "Batticaloa": [
-    "St. Michael's College",
-    "Methodist Central College",
-    "Batticaloa Hindu College",
-    "Vincent Girls' High School",
-    "St. Cecilia's Girls' College"
+    {"name": "St. Michael's College", "lat": 7.7159, "lng": 81.6842},
+    {"name": "Methodist Central College", "lat": 7.7170, "lng": 81.6835},
+    {"name": "Batticaloa Hindu College", "lat": 7.7166, "lng": 81.6849},
+    {"name": "Vincent Girls' High School", "lat": 7.7155, "lng": 81.6831},
+    {"name": "St. Cecilia's Girls' College", "lat": 7.7161, "lng": 81.6844}
   ],
   "Ampara": [
-    "Ampara Central College",
-    "Nintavur Central College",
-    "Kalmunai Muslim Central College",
-    "T.M.V. School",
-    "Addalaichenai Central College"
+    {"name": "Ampara Central College", "lat": 7.2977, "lng": 81.6746},
+    {"name": "Nintavur Central College", "lat": 7.2973, "lng": 81.6754},
+    {"name": "Kalmunai Muslim Central College", "lat": 7.2966, "lng": 81.6757},
+    {"name": "T.M.V. School", "lat": 7.2962, "lng": 81.6761},
+    {"name": "Addalaichenai Central College", "lat": 7.2971, "lng": 81.6743}
   ],
   "Trincomalee": [
-    "St. Joseph's College",
-    "Trincomalee Central College",
-    "T/Koneswara Hindu College",
-    "Sri Shanmuga Hindu Ladies' College",
-    "Trincomalee Girls' High School"
+    {"name": "St. Joseph's College", "lat": 8.5835, "lng": 81.2337},
+    {"name": "Trincomalee Central College", "lat": 8.5838, "lng": 81.2339},
+    {"name": "T/Koneswara Hindu College", "lat": 8.5839, "lng": 81.2334},
+    {"name": "Sri Shanmuga Hindu Ladies' College", "lat": 8.5834, "lng": 81.2341},
+    {"name": "Trincomalee Girls' High School", "lat": 8.5832, "lng": 81.2340}
   ],
   "Kurunegala": [
-    "Maliyadeva College",
-    "St. Anne's College",
-    "Holy Family Convent",
-    "Maliyadeva Girls' College",
-    "Wayamba Royal College"
+    {"name": "Maliyadeva College", "lat": 7.4865, "lng": 80.3653},
+    {"name": "St. Anne's College", "lat": 7.4873, "lng": 80.3661},
+    {"name": "Holy Family Convent", "lat": 7.4869, "lng": 80.3657},
+    {"name": "Maliyadeva Girls' College", "lat": 7.4862, "lng": 80.3649},
+    {"name": "Wayamba Royal College", "lat": 7.4870, "lng": 80.3665}
   ],
   "Puttalam": [
-    "St. Andrew's Central College",
-    "Zahira National College",
-    "Puttalam Hindu Central College",
-    "Joseph Vaz College",
-    "Ananda National College"
+    {"name": "St. Andrew's Central College", "lat": 8.0321, "lng": 79.8398},
+    {"name": "Zahira National College", "lat": 8.0316, "lng": 79.8394},
+    {"name": "Puttalam Hindu Central College", "lat": 8.0320, "lng": 79.8396},
+    {"name": "Joseph Vaz College", "lat": 8.0319, "lng": 79.8393},
+    {"name": "Ananda National College", "lat": 8.0318, "lng": 79.8397}
   ],
   "Anuradhapura": [
-    "Central College",
-    "St. Joseph's College",
-    "Swarnapali Balika Vidyalaya",
-    "Dharmapala Vidyalaya",
-    "Gamini Vidyalaya"
+    {"name": "Central College", "lat": 8.3124, "lng": 80.4120},
+    {"name": "St. Joseph's College", "lat": 8.3119, "lng": 80.4118},
+    {"name": "Swarnapali Balika Vidyalaya", "lat": 8.3122, "lng": 80.4116},
+    {"name": "Dharmapala Vidyalaya", "lat": 8.3125, "lng": 80.4123},
+    {"name": "Gamini Vidyalaya", "lat": 8.3127, "lng": 80.4119}
   ],
   "Polonnaruwa": [
-    "Royal College",
-    "Vijitha Central College",
-    "Medirigiriya National School",
-    "Bakamoona National College",
-    "Lankapura Maha Vidyalaya"
+    {"name": "Royal College", "lat": 7.9407, "lng": 81.0037},
+    {"name": "Vijitha Central College", "lat": 7.9411, "lng": 81.0042},
+    {"name": "Medirigiriya National School", "lat": 7.9404, "lng": 81.0039},
+    {"name": "Bakamoona National College", "lat": 7.9400, "lng": 81.0034},
+    {"name": "Lankapura Maha Vidyalaya", "lat": 7.9403, "lng": 81.0035}
   ],
   "Badulla": [
-    "Uva College",
-    "Badulla Central College",
-    "Diyatalawa Central College",
-    "Bandarawela Central College",
-    "Passara National School"
+    {"name": "Uva College", "lat": 6.9884, "lng": 81.0548},
+    {"name": "Badulla Central College", "lat": 6.9891, "lng": 81.0550},
+    {"name": "Diyatalawa Central College", "lat": 6.9879, "lng": 81.0543},
+    {"name": "Bandarawela Central College", "lat": 6.9875, "lng": 81.0540},
+    {"name": "Passara National School", "lat": 6.9881, "lng": 81.0546}
   ],
   "Moneragala": [
-    "St. Joseph's College",
-    "Mahanama College",
-    "Moneragala Central College",
-    "Bibile Central College",
-    "Sastralaya National School"
+    {"name": "St. Joseph's College", "lat": 6.6545, "lng": 81.3460},
+    {"name": "Mahanama College", "lat": 6.6541, "lng": 81.3457},
+    {"name": "Moneragala Central College", "lat": 6.6548, "lng": 81.3462},
+    {"name": "Bibile Central College", "lat": 6.6538, "lng": 81.3454},
+    {"name": "Sastralaya National School", "lat": 6.6543, "lng": 81.3456}
   ],
   "Ratnapura": [
-    "Dharmapala Vidyalaya",
-    "St. Aloysius' College",
-    "Sivananda National College",
-    "St. Joseph's Girls' College",
-    "Pelmadulla National College"
+    {"name": "Dharmapala Vidyalaya", "lat": 6.6828, "lng": 80.3993},
+    {"name": "St. Aloysius' College", "lat": 6.6825, "lng": 80.3988},
+    {"name": "Sivananda National College", "lat": 6.6829, "lng": 80.3990},
+    {"name": "St. Joseph's Girls' College", "lat": 6.6823, "lng": 80.3986},
+    {"name": "Pelmadulla National College", "lat": 6.6826, "lng": 80.3989}
   ],
   "Kegalle": [
-    "Kegalu Vidyalaya",
-    "St. Mary's College",
-    "Rambuka Maha Vidyalaya",
-    "Bandaranayake Central College",
-    "Warakapola Central College"
+    {"name": "Kegalu Vidyalaya", "lat": 7.2502, "lng": 80.3458},
+    {"name": "St. Mary's College", "lat": 7.2507, "lng": 80.3463},
+    {"name": "Rambuka Maha Vidyalaya", "lat": 7.2505, "lng": 80.3459},
+    {"name": "Bandaranayake Central College", "lat": 7.2510, "lng": 80.3465},
+    {"name": "Warakapola Central College", "lat": 7.2512, "lng": 80.3468}
   ]
 }
