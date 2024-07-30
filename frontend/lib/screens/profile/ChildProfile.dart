@@ -1,12 +1,16 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/widgets/buttons.dart';
 import 'package:safe_ride_mobile/widgets/inputField.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Assitant/assistantMethods.dart';
+import '../../Assitant/locationData.dart';
+import '../../models/school.dart';
 import '../../widgets/PopUp.dart';
 import '../../widgets/dropdownField.dart';
 
@@ -22,9 +26,14 @@ class ChildProfile extends StatefulWidget {
 class _ChildProfileState extends State<ChildProfile> {
 
   final TextEditingController _nameController = TextEditingController();
-  String _selectedSchool = '';
-  List<String> _schools = [];
+  final TextEditingController _startLocationController = TextEditingController();
+
   bool _isLoading = false;
+
+  String selectedDistrict = 'Ampara';
+  List<School> schoolsList = [];
+  School? selectedSchool;
+  late Map<String, dynamic> _startingPoint;
 
   @override
   void initState() {
@@ -32,18 +41,49 @@ class _ChildProfileState extends State<ChildProfile> {
     _fetchSchools();
   }
 
-  void _fetchSchools() async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref('schools');
-    DataSnapshot snapshot = await ref.get();
-    if (snapshot.exists) {
-      List<String> fetchedSchools = [];
-      for (var school in snapshot.children) {
-        fetchedSchools.add(school.child('name').value.toString());
+  // void _fetchSchools() async {
+  //   DatabaseReference ref = FirebaseDatabase.instance.ref('schools');
+  //   DataSnapshot snapshot = await ref.get();
+  //   if (snapshot.exists) {
+  //     List<String> fetchedSchools = [];
+  //     for (var school in snapshot.children) {
+  //       fetchedSchools.add(school.child('name').value.toString());
+  //     }
+  //     setState(() {
+  //       _schools = fetchedSchools;
+  //     });
+  //   }
+  // }
+
+  Future<void> _fetchSchools() async {
+    DatabaseReference schoolsRef = FirebaseDatabase.instance.reference()
+        .child('schoolsBaseOnDistricts')
+        .child(selectedDistrict);
+    schoolsRef.once().then((DatabaseEvent event) {
+      DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        var snapshotValue = snapshot.value;
+        if (snapshotValue is List) {
+          List<School> fetchedSchoolsList = snapshotValue
+              .whereType<Map>()
+              .map((item) => School.fromMap(item))
+              .toList();
+          setState(() {
+            schoolsList = fetchedSchoolsList;
+            selectedSchool = schoolsList.isNotEmpty ? schoolsList.first : null;
+          });
+        } else {
+          print('Error: Data is not in the expected format.');
+        }
+      } else {
+        setState(() {
+          schoolsList = [];
+          selectedSchool = null;
+        });
       }
-      setState(() {
-        _schools = fetchedSchools;
-      });
-    }
+    }).catchError((error) {
+      print('Error fetching schools: $error');
+    });
   }
 
   Future<void> _handleSubmit() async {
@@ -51,7 +91,7 @@ class _ChildProfileState extends State<ChildProfile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? parentId = prefs.getString('uid');
 
-    if (parentId == null || _nameController.text.isEmpty || _selectedSchool.isEmpty) {
+    if (parentId == null || _nameController.text.isEmpty ) {
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -76,29 +116,31 @@ class _ChildProfileState extends State<ChildProfile> {
 
     try {
       // Get school ID based on selected school name
-      DatabaseReference schoolRef = FirebaseDatabase.instance.ref('schools');
-      DataSnapshot schoolSnapshot = await schoolRef.get();
-      String? schoolId;
-      if (schoolSnapshot.exists) {
-        for (var school in schoolSnapshot.children) {
-          if (school.child('name').value.toString() == _selectedSchool) {
-            schoolId = school.key;
-            break;
-          }
-        }
-      }
-
-      if (schoolId == null) {
-        // Handle error if school ID is not found
-        throw Exception('School ID not found');
-      }
+      // DatabaseReference schoolRef = FirebaseDatabase.instance.ref('schools');
+      // DataSnapshot schoolSnapshot = await schoolRef.get();
+      // String? schoolId;
+      // if (schoolSnapshot.exists) {
+      //   for (var school in schoolSnapshot.children) {
+      //     if (school.child('name').value.toString() == selectedSchool?.name) {
+      //       schoolId = school.key;
+      //       break;
+      //     }
+      //   }
+      // }
+      //
+      // if (schoolId == null) {
+      //   // Handle error if school ID is not found
+      //   throw Exception('School ID not found');
+      // }
 
       // Save child data to Firebase Realtime Database
       DatabaseReference childrenRef = FirebaseDatabase.instance.ref('children').push();
       await childrenRef.set({
         'name': _nameController.text,
-        'schoolId': schoolId,
+        'district': selectedDistrict,
+        'school': selectedSchool?.toMap(),
         'parentId': parentId,
+        'tripStartingLocation': _startingPoint
       });
 
       setState(() {
@@ -205,17 +247,88 @@ class _ChildProfileState extends State<ChildProfile> {
                         labelText: 'Name',
                         exampleText: 'Enter Child Name',
                       ),
-                      _schools.isEmpty
-                          ? const CircularProgressIndicator()
-                          : CustomDropdownField(
-                        labelText: 'Select School',
-                        items: _schools,
-                        selectedItem: _selectedSchool,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedSchool = newValue!;
-                          });
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Container(
+                          width: 260.0,
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: DropdownButton<String>(
+                            value: selectedDistrict,
+                            items: LocationData.districts.map((String district) {
+                              return DropdownMenuItem<String>(
+                                value: district,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Text(district),
+                                ),
+                              );
+                            }).toList(),
+                            isExpanded: true,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedDistrict = newValue!;
+                                _fetchSchools();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Container(
+                          width: 260.0,
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: DropdownButton<School>(
+                            value: selectedSchool,
+                            hint: const Text('Select School'),
+                            items: schoolsList.map((School school) {
+                              return DropdownMenuItem<School>(
+                                value: school,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Text(school.name),
+                                ),
+                              );
+                            }).toList(),
+                            isExpanded: true,
+                            onChanged: (School? newValue) {
+                              setState(() {
+                                selectedSchool = newValue;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      TypeAheadField<String>(
+                        textFieldConfiguration: TextFieldConfiguration(
+                          controller: _startLocationController,
+                          decoration: const InputDecoration(
+                            labelText: 'Search Start Location',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        suggestionsCallback: (pattern) async {
+                          return await AssistantMethods.getSuggestions(pattern);
                         },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            title: Text(suggestion),
+                          );
+                        },
+                        onSuggestionSelected: (suggestion) async {
+                          _startLocationController.text = suggestion;
+                          _startingPoint = await AssistantMethods.getPlaceDetails(suggestion);
+                        },
+                        hideSuggestionsOnKeyboardHide: false,
+                        keepSuggestionsOnSuggestionSelected: false,
                       ),
                     ],
                   ),
