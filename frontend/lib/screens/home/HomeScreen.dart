@@ -63,10 +63,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<Child>> fetchChildrenFromDatabase(String parentId) async {
-
     DatabaseReference childrenRef = FirebaseDatabase.instance.ref('children');
     DataSnapshot snapshot = await childrenRef.orderByChild('parentId').equalTo(parentId).get();
-
     List<Child> children = [];
     if (snapshot.exists) {
       Map<dynamic, dynamic> childrenData = snapshot.value as Map<dynamic, dynamic>;

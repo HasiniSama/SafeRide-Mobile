@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_ride_mobile/const/appColors.dart';
 import 'package:safe_ride_mobile/screens/home/MapScreen.dart';
@@ -26,6 +27,7 @@ class _DriverHomeState extends State<DriverHome> {
   String? firstName;
   String? lastName;
   String? email;
+  String? busId;
 
   Future<void> _loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,7 +35,12 @@ class _DriverHomeState extends State<DriverHome> {
       firstName = prefs.getString('firstName');
       lastName = prefs.getString('lastName');
       email = prefs.getString('email');
+      busId = prefs.getString('uid');
     });
+  }
+
+  Future<void> _showPathMap() async {
+
   }
 
   @override
@@ -77,8 +84,8 @@ class _DriverHomeState extends State<DriverHome> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
@@ -98,8 +105,8 @@ class _DriverHomeState extends State<DriverHome> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                children: const <Widget>[
+              child: const Row(
+                children: <Widget>[
                   IconSquare(
                     navigator: '',
                     icon: Icon(
@@ -129,9 +136,9 @@ class _DriverHomeState extends State<DriverHome> {
                       topRight: Radius.circular(10.0),
                     ),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Padding(
                         padding: EdgeInsets.only(left: 16.0),
                         child: Icon(
@@ -156,7 +163,18 @@ class _DriverHomeState extends State<DriverHome> {
           ],
         ),
       ),
-      body: MapScreen(),
+      body: Stack(
+        children: [
+          MapScreen(),
+          Positioned(
+              bottom: 16.00,
+              right: 16.00,
+              child: FloatingActionButton(onPressed: () {  if (kDebugMode) {
+                _showPathMap();
+              } },
+                child: const Icon(Icons.navigation),))
+        ],
+      )
     );
   }
 }
