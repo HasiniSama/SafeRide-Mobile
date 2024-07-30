@@ -15,6 +15,7 @@ import 'package:safe_ride_mobile/screens/login/SignUpRole.dart';
 import 'package:safe_ride_mobile/screens/parent/AbsentCalender.dart';
 import 'package:safe_ride_mobile/screens/parent/BusList.dart';
 import 'package:safe_ride_mobile/screens/payment/PaymentDetails.dart';
+import 'package:safe_ride_mobile/screens/payment/SelectBus.dart';
 import 'package:safe_ride_mobile/screens/profile/ChildProfile.dart';
 import 'package:safe_ride_mobile/screens/profile/ParentProfile.dart';
 import 'package:safe_ride_mobile/providers/location_provider.dart';
@@ -54,30 +55,31 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => SelectedChildProvider())
       ],
       child: MaterialApp(
-          title: 'Safe Ride App',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          // home: HomePage(logout: logout),
-          home: LoginPage(),
-          routes: {
-            '/home': (context) => const HomePage(),
-            '/parent_profile': (context) => const ParentProfile(),
-            '/driver_profile': (context) => const DriverProfile(),
-            '/driver_home': (context) => const DriverHome(),
-            '/absent_calender': (context) => const AbsentCalender(),
-            '/child_profile': (context) => const ChildProfile(),
-            '/child_home': (context) => const ChildHomeScreen(),
-            '/bus_list': (context) => const BusList(),
-            '/payment': (context) => const PaymentDetails(),
-            '/login': (context) => LoginPage(),
-            '/sign_up_role': (context) => const SignUpRolePage(),
-            '/sign_up_parent': (context) => SignUpParentPage(),
-            '/sign_up_driver': (context) => SignUpDriverPage(),
-            '/firebase_add': (context) => const FirebaseAdd(),
-          },
-          onGenerateRoute: (settings) {
-            if (settings.name == '/sign_up_driver_doc') {
+        title: 'Safe Ride App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // home: HomePage(logout: logout),
+        home: LoginPage(),
+        routes: {
+          '/home': (context) => const HomePage(),
+          '/parent_profile': (context) => const ParentProfile(),
+          '/driver_profile': (context) => const DriverProfile(),
+          '/driver_home': (context) => const DriverHome(),
+          '/absent_calender': (context) => const AbsentCalender(),
+          '/child_profile': (context) => const ChildProfile(),
+          '/child_home': (context) => const ChildHomeScreen(),
+          '/bus_list': (context) => const BusList(),
+          '/payment': (context) => const PaymentDetails(),
+          '/payhere': (context) => const SelectBus(),
+          '/login': (context) => LoginPage(),
+          '/sign_up_role': (context) => const SignUpRolePage(),
+          '/sign_up_parent': (context) => SignUpParentPage(),
+          '/sign_up_driver': (context) => SignUpDriverPage(),
+          '/firebase_add': (context) => const FirebaseAdd(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == '/sign_up_driver_doc') {
             final args = settings.arguments as Map<String, String>;
             return MaterialPageRoute(
               builder: (context) => SignUpDriverDocPage(
@@ -87,10 +89,10 @@ class _MyAppState extends State<MyApp> {
                   nic: args['nic']!,
                   mobile: args['mobile']!,
                   pass: args['pass']!),
-              );
-            }
-            return null;
-          },
+            );
+          }
+          return null;
+        },
       ),
     );
   }
