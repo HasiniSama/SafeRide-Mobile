@@ -267,10 +267,10 @@ class _DriverProfileState extends State<DriverProfile> {
 
   Future<void> _saveDriverData(BuildContext context) async {
     try {
-      DatabaseReference driverRef = FirebaseDatabase.instance.reference().child('busses');
+      DatabaseReference busRef = FirebaseDatabase.instance.reference().child('busses');
       List<Map<String, dynamic>> selectedSchoolsAsMaps = selectedSchools.map((school) => school.toMap()).toList();
 
-      Map<String, dynamic> driverData = {
+      Map<String, dynamic> busData = {
         'driverId': FirebaseAuth.instance.currentUser!.uid,
         'district': selectedDistrict,
         'busNumber': 2342,
@@ -287,7 +287,7 @@ class _DriverProfileState extends State<DriverProfile> {
           'locationName': _endingPoint['locationName']
         },
       };
-      await driverRef.push().set(driverData);
+      await busRef.push().set(busData);
 
       showModalBottomSheet(
         context: context,
