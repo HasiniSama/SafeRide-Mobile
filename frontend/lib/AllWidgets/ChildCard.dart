@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
+import '../models/child.dart';
+
 class ChildCard extends StatelessWidget {
-  final String name;
+  final Child? child;
   final String? status;
   final String navigator;
   final IconData icon;
-  final String? childId;
 
   const ChildCard({
     Key? key,
-    required this.name,
+    required this.child,
     this.status,
     required this.navigator,
-    required this.icon,
-    this.childId,
+    required this.icon
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, navigator, arguments: childId);
+        Navigator.pushNamed(context, navigator, arguments: child);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -51,8 +51,8 @@ class ChildCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    name,
-                    style: const TextStyle(
+                  (child?.name ?? 'Add a Child'),
+                  style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,

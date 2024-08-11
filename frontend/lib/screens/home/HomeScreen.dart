@@ -92,29 +92,6 @@ class _HomePageState extends State<HomePage> {
               )
               : const Center(child: CircularProgressIndicator()), // Loading indicator while data is being fetched
             ),
-            // Center(
-            //   child: SingleChildScrollView(
-            //     scrollDirection: Axis.horizontal,
-            //     padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            //     child: Row(
-            //         children: <Widget>[
-            //           ...children.map((child) => IconSquare(
-            //             navigator: '/child_home',
-            //             icon: const Icon(Icons.accessibility),
-            //             name: child.name,
-            //             childId: child.id
-            //           )),
-            //           const IconSquare(
-            //             navigator: '/child_profile',
-            //             icon: Icon(
-            //               Icons.add_circle,
-            //             ),
-            //             name: 'Add Child',
-            //           ),
-            //         ],
-            //     ),
-            //   ),
-            // ),
             Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 32.0, vertical: 10.0),
@@ -243,14 +220,12 @@ class _HomePageState extends State<HomePage> {
               ...children.map((child) => ChildCard(
                 navigator: '/child_home',
                 icon: Icons.accessibility,
-                name: child.name,
+                child: child,
                 status: 'Active', // Replace with actual status if available
               )),
               const ChildCard(
                 navigator: '/child_profile',
-                icon: Icons.add_circle,
-                name: 'Add Child',
-                status: '',
+                icon: Icons.add_circle, child: null,
               ),
             ],
           ),
