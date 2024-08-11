@@ -7,6 +7,7 @@ import 'package:safe_ride_mobile/widgets/NavBar.dart';
 import 'package:safe_ride_mobile/widgets/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../AllWidgets/ChildCard.dart';
 import '../../models/child.dart';
 
 class HomePage extends StatefulWidget {
@@ -43,8 +44,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         children = fetchedChildren;
       });
-      print(children.first.id);
-      print("HIIIIIIIIIIIIIIII");
     }
   }
 
@@ -78,7 +77,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       appBar: const CustomAppBar(),
       drawer: Drawer(
         child: ListView(
@@ -93,29 +92,29 @@ class _HomePageState extends State<HomePage> {
               )
               : const Center(child: CircularProgressIndicator()), // Loading indicator while data is being fetched
             ),
-            Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Row(
-                    children: <Widget>[
-                      ...children.map((child) => IconSquare(
-                        navigator: '/child_home',
-                        icon: const Icon(Icons.accessibility),
-                        name: child.name,
-                        childId: child.id
-                      )),
-                      const IconSquare(
-                        navigator: '/child_profile',
-                        icon: Icon(
-                          Icons.add_circle,
-                        ),
-                        name: 'Add Child',
-                      ),
-                    ],
-                ),
-              ),
-            ),
+            // Center(
+            //   child: SingleChildScrollView(
+            //     scrollDirection: Axis.horizontal,
+            //     padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            //     child: Row(
+            //         children: <Widget>[
+            //           ...children.map((child) => IconSquare(
+            //             navigator: '/child_home',
+            //             icon: const Icon(Icons.accessibility),
+            //             name: child.name,
+            //             childId: child.id
+            //           )),
+            //           const IconSquare(
+            //             navigator: '/child_profile',
+            //             icon: Icon(
+            //               Icons.add_circle,
+            //             ),
+            //             name: 'Add Child',
+            //           ),
+            //         ],
+            //     ),
+            //   ),
+            // ),
             Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 32.0, vertical: 10.0),
@@ -160,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(
                       Icons.compare_arrows,
                     ),
-                    name: 'Transection History',
+                    name: 'Transactions',
                   ),
                   IconSquare(
                     navigator: '/payhere',
@@ -234,7 +233,29 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: MapScreen(),
+      // body: MapScreen(),
+      body: Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          child: Column(
+            children: <Widget>[
+              ...children.map((child) => ChildCard(
+                navigator: '/child_home',
+                icon: Icons.accessibility,
+                name: child.name,
+                status: 'Active', // Replace with actual status if available
+              )),
+              const ChildCard(
+                navigator: '/child_profile',
+                icon: Icons.add_circle,
+                name: 'Add Child',
+                status: '',
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
