@@ -12,16 +12,18 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.7.0"
+          flutter-version: "3.19.2"
 
       - name: Install dependencies
+        working-directory: frontend
         run: flutter pub get
 
       - name: Run tests
+        working-directory: frontend
         run: flutter test --coverage
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v2
         with:
           name: coverage-report
-          path: coverage/lcov.info
+          path: frontend/coverage/lcov.info
