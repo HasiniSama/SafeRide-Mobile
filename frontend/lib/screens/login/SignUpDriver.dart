@@ -75,42 +75,49 @@ class SignUpDriverPage extends StatelessWidget {
                                     const CustomText(text: 'Driver Sign Up', fontSize: 25),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('driverfirstname'),
                                       labelText: 'First Name',
                                       controller: firstNameController,
                                       keyboardType: TextInputType.name,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('driverlastname'),
                                       labelText: 'Last Name',
                                       controller: lastNameController,
                                       keyboardType: TextInputType.name,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('driveremail'),
                                       labelText: 'Email',
                                       controller: emailController,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('drivernic'),
                                       labelText: 'NIC No.',
                                       controller: nicController,
                                       keyboardType: TextInputType.number,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('drivermobile'),
                                       labelText: 'Mobile',
                                       controller: mobileController,
                                       keyboardType: TextInputType.phone,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('driverpassword'),
                                       labelText: 'Password',
                                       controller: passController,
                                       keyboardType: TextInputType.visiblePassword,
                                     ),
                                     const SizedBox(height: 30),
                                     LabeledFormField(
+                                      key: const Key('driverconpassword'),
                                       labelText: 'Confirm Password',
                                       controller: confirmPassController,
                                       keyboardType: TextInputType.visiblePassword,
@@ -122,6 +129,7 @@ class SignUpDriverPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 30),
                           ElevatedButton(
+                            key: const Key('driverbtn'),
                             style: AppButtonsStyle.blueButtonStyle,
                             onPressed: () {
 

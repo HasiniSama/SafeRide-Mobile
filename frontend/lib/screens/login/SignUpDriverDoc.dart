@@ -128,6 +128,7 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
                         ),
                         const SizedBox(height: 30),
                         ElevatedButton(
+                          key: const Key('signupdriverdocButton'),
                           style: AppButtonsStyle.blueButtonStyle,
                           onPressed: () {
                             registerNewUser(context);

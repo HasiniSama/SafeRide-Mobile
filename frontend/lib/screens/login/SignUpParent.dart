@@ -123,6 +123,7 @@ class SignUpParentPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 30),
                           ElevatedButton(
+                            key: const Key('signupparentButton'),
                             style: AppButtonsStyle.blueButtonStyle,
                             onPressed: () {
                               registerNewUser(context);
