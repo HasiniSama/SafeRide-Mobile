@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import '../models/child.dart';
 
 class SelectedChildProvider with ChangeNotifier {
-  String? _selectedChildId;
+  Child? _selectedChildId;
 
-  String? get selectedChildId => _selectedChildId;
+  Child? get selectedChildId => _selectedChildId;
 
-  void selectChild(String childId) {
-    _selectedChildId = childId;
+  void selectChild(Child child) {
+    _selectedChildId = child;
     notifyListeners();
   }
 

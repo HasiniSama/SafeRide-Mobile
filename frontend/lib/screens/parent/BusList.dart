@@ -22,7 +22,7 @@ class _BusListState extends State<BusList> {
   @override
   void initState() {
     super.initState();
-    childrenID = Provider.of<SelectedChildProvider>(context, listen: false).selectedChildId!;
+    childrenID = Provider.of<SelectedChildProvider>(context, listen: false).selectedChildId!.id!;
     _fetchChildrenData();
   }
 

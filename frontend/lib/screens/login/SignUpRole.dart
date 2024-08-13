@@ -42,7 +42,7 @@ class SignUpRolePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 150),
+                  const SizedBox(height: 100),
                   Center(
                     child: Column(
                       children: [
@@ -57,7 +57,7 @@ class SignUpRolePage extends StatelessWidget {
                               top: 47.0,
                               left: 32.0,
                               width: 261.0,
-                              height: 351.0,
+                              height: 371.0,
                               child: Column(
                                 children: [
                                   const CustomText(text: 'Choose your role', fontSize: 25),

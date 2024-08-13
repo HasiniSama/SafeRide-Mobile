@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -26,13 +27,21 @@ class _DriverHomeState extends State<DriverHome> {
   String? lastName;
   String? email;
   String? busId;
+  String? driverID;
   late List<LatLng> _locations = [];
   Set<Polyline> _polylines = {};
+  Marker? _driverMarker;
+  LatLng _currentDriverPosition = const LatLng(6.72661, 80.29267);
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    _driverMarker = Marker(
+      markerId: const MarkerId('driver'),
+      position: _currentDriverPosition,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    );
   }
 
   Future<void> _loadUserData() async {
@@ -41,20 +50,21 @@ class _DriverHomeState extends State<DriverHome> {
       firstName = prefs.getString('firstName');
       lastName = prefs.getString('lastName');
       email = prefs.getString('email');
-      busId = prefs.getString('uid');
+      driverID = prefs.getString('uid');
     });
   }
 
   Future<void> _showPathMap() async {
     _locations = [];
-    DatabaseReference busRef = FirebaseDatabase.instance.reference().child('busses');
-    Query query = busRef.orderByChild('driverId').equalTo(FirebaseAuth.instance.currentUser!.uid);
+    DatabaseReference busRef = FirebaseDatabase.instance.ref().child('busses');
+    Query query = busRef.orderByChild('driverId').equalTo(driverID);
 
     DataSnapshot snapshot = await query.once().then((DatabaseEvent event) => event.snapshot);
 
     if (snapshot.value != null) {
       Map<dynamic, dynamic> buses = snapshot.value as Map<dynamic, dynamic>;
       buses.forEach((key, busData) {
+        busId = key;
         if (busData['startingPoint'] != null) {
           _locations.add(LatLng(
             busData['startingPoint']['latitude'],
@@ -108,13 +118,23 @@ class _DriverHomeState extends State<DriverHome> {
         var points = data['routes'][0]['overview_polyline']['points'];
         List<LatLng> polylinePoints = _decodePolyline(points);
 
+        // Save the polyline points to Firebase
+        DatabaseReference polylineRef = FirebaseDatabase.instance.ref().child('busses')
+            .child(busId!).child('polyline');
+        polylineRef.set(polylinePoints.map((point) => {
+          'latitude': point.latitude,
+          'longitude': point.longitude,
+        }).toList());
+
         setState(() {
           _polylines = {
             Polyline(
               polylineId: const PolylineId('path'),
               points: polylinePoints,
               color: Colors.pink,
-              width: 10,
+              width: 5,
+              jointType: JointType.round,
+              geodesic: true
             ),
           };
         });
@@ -155,6 +175,64 @@ class _DriverHomeState extends State<DriverHome> {
     }
 
     return polyline;
+  }
+
+  void _updateDriverPosition(LatLng newPosition) {
+
+    DatabaseReference driverPositionRef = FirebaseDatabase.instance.ref().child('busses').child(busId!).child('driverPosition');
+    driverPositionRef.set({
+      'latitude': newPosition.latitude,
+      'longitude': newPosition.longitude,
+    });
+    setState(() {
+      _currentDriverPosition = newPosition;
+      _driverMarker = Marker(
+        markerId: const MarkerId('driver'),
+        position: _currentDriverPosition,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      );
+    });
+  }
+
+  void _startDemo() {
+    if (_polylines.isEmpty) return;
+
+    // Get the polyline points from the first polyline (assuming there's only one)
+    List<LatLng> routePoints = _polylines.first.points;
+    int currentPointIndex = 0;
+
+    Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (currentPointIndex >= routePoints.length) {
+        timer.cancel();
+      } else {
+        LatLng newPosition = routePoints[currentPointIndex];
+        _updateDriverPosition(newPosition);
+
+        // Move the camera to follow the driver's marker
+        _mapController?.animateCamera(
+          CameraUpdate.newLatLng(newPosition),
+        );
+
+        currentPointIndex++;
+      }
+    });
+  }
+
+  Set<Marker> _createMarkers() {
+    // Convert _locations to markers
+    Set<Marker> markers = _locations.map((location) {
+      return Marker(
+        markerId: MarkerId(location.latitude.toString() + location.longitude.toString()),
+        position: location,
+      );
+    }).toSet();
+
+    // Add the driver's marker if it exists
+    if (_driverMarker != null) {
+      markers.add(_driverMarker!);
+    }
+
+    return markers;
   }
 
   @override
@@ -297,6 +375,7 @@ class _DriverHomeState extends State<DriverHome> {
               onPressed: () {
                 if (kDebugMode) {
                   _showPathMap();
+                  _startDemo();
                 }
               },
               child: const Icon(Icons.navigation),
@@ -307,12 +386,12 @@ class _DriverHomeState extends State<DriverHome> {
     );
   }
 
-  Set<Marker> _createMarkers() {
-    return _locations.map((location) {
-      return Marker(
-        markerId: MarkerId(location.latitude.toString() + location.longitude.toString()),
-        position: location,
-      );
-    }).toSet();
-  }
+  // Set<Marker> _createMarkers() {
+  //   return _locations.map((location) {
+  //     return Marker(
+  //       markerId: MarkerId(location.latitude.toString() + location.longitude.toString()),
+  //       position: location,
+  //     );
+  //   }).toSet();
+  // }
 }
