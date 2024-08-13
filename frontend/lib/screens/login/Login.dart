@@ -11,7 +11,6 @@ import '../../const/appColors.dart';
 
 class LoginPage extends StatefulWidget {
 
-
   LoginPage({super.key});
 
   @override
@@ -94,12 +93,14 @@ class _LoginPageState extends State<LoginPage> {
                                   const CustomText(text: 'Log In', fontSize: 25),
                                   const SizedBox(height: 30),
                                   LabeledFormField(
+                                      key: const Key('emailField'),
                                       labelText: 'Username / Email',
                                       controller: emailController,
                                       keyboardType: TextInputType.emailAddress,
                                   ),
                                   const SizedBox(height: 30),
                                   LabeledFormField(
+                                    key: const Key('passwordField'),
                                     labelText: 'Password',
                                     controller: passController,
                                   ),
@@ -122,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                       _isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
+                              key: const Key('loginButton'),
                               style: AppButtonsStyle.blueButtonStyle,
                               onPressed: () {
                                 loginUser(context);
