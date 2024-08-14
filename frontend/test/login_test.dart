@@ -52,4 +52,20 @@ void main() {
     expect(find.byType(BottomPopupBar), findsOneWidget);
     expect(find.text('All fields are required'), findsOneWidget);
   });
-}
+
+    testWidgets('Login form validation', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: LoginPage()));
+
+      final loginPageState = tester.state<
+          LoginPageState>(find.byType(LoginPage)) as LoginPageState;
+
+      // Access and modify controllers
+      loginPageState.emailController.text = 'john.doe@example.com';
+      loginPageState.passController.text = 'password123';
+
+      // Validate form
+      final validationMessage = loginPageState.validateFormFields();
+      expect(validationMessage, isNull);
+    });
+  }
+

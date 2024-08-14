@@ -10,15 +10,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/PopUp.dart';
 
 class ParentProfile extends StatefulWidget {
+  final SharedPreferences sharedPreferences;
+
   const ParentProfile({
     super.key,
+    required this.sharedPreferences,
   });
 
   @override
-  State<ParentProfile> createState() => _ParentProfileState();
+  State<ParentProfile> createState() => ParentProfileState();
 }
 
-class _ParentProfileState extends State<ParentProfile> {
+class ParentProfileState extends State<ParentProfile> {
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -43,10 +46,10 @@ class _ParentProfileState extends State<ParentProfile> {
   Future<void> _loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      firstName = prefs.getString('firstName');
-      lastName = prefs.getString('lastName');
-      email = prefs.getString('email');
-      mobile = prefs.getString('mobile');
+      firstName = widget.sharedPreferences.getString('firstName');
+      lastName = widget.sharedPreferences.getString('lastName');
+      email = widget.sharedPreferences.getString('email');
+      mobile = widget.sharedPreferences.getString('mobile');
     });
   }
 
