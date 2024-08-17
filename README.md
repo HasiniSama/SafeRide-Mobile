@@ -1,3 +1,6 @@
+# SafeRide-Admin
+[SafeRide-Admin Repo](https://github.com/Poornajith/Safe-Ride-Admin-Web)
+
 # SafeRide-Mobile
 
 SafeRide is a Flutter mobile application designed to provide a secure and convenient school transportation management system. This repository contains the frontend development using Flutter, while the backend is developed using NodeJS and Express. The application utilizes MongoDB for the database and WSO2 IS as the identity provider. Firebase Cloud Messaging is integrated for notifications.
