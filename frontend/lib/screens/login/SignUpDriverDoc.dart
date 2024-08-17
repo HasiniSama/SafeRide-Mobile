@@ -216,6 +216,7 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
           "drivingLicenseUrl": drivingLicenseUrl,
           "nicFileUrl": nicFileUrl,
           "vehicleRegistrationUrl": vehicleRegistrationUrl,
+          "status": "pending"
         };
         usersRef.child(uid).set(userDataMap);
       }

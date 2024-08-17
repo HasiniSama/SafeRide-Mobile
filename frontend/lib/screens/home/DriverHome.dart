@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:safe_ride_mobile/const/appColors.dart';
@@ -13,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../const/appKeys.dart';
 import '../../widgets/NavBar.dart';
+import '../../widgets/PopUp.dart';
 
 class DriverHome extends StatefulWidget {
   const DriverHome({super.key});
@@ -31,12 +33,13 @@ class _DriverHomeState extends State<DriverHome> {
   late List<LatLng> _locations = [];
   Set<Polyline> _polylines = {};
   Marker? _driverMarker;
-  LatLng _currentDriverPosition = const LatLng(6.72661, 80.29267);
+  LatLng _currentDriverPosition = const LatLng(6.7312446, 80.2781262);
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    _getCurrentLocation();
     _driverMarker = Marker(
       markerId: const MarkerId('driver'),
       position: _currentDriverPosition,
@@ -65,13 +68,52 @@ class _DriverHomeState extends State<DriverHome> {
       Map<dynamic, dynamic> buses = snapshot.value as Map<dynamic, dynamic>;
       buses.forEach((key, busData) {
         busId = key;
-        if (busData['startingPoint'] != null) {
-          _locations.add(LatLng(
-            busData['startingPoint']['latitude'],
-            busData['startingPoint']['longitude'],
-          ));
+
+        _locations.add(_currentDriverPosition);
+        if (busData['children'] != null) {
+          Map<dynamic, dynamic> children = busData['children'];
+          children.forEach((childKey, childData) {
+            if (childData['startingLocation'] != null) {
+              _locations.add(LatLng(
+                double.parse(childData['startingLocation']['lat']),
+                double.parse(childData['startingLocation']['lng']),
+              ));
+            }
+          });
         }
 
+        if (busData['schools'] != null) {
+          List<dynamic> schools = busData['schools'];
+          for (var school in schools) {
+            _locations.add(LatLng(
+              school['lat'],
+              school['lng'],
+            ));
+          }
+        }
+      });
+
+      if (_locations.length > 1) {
+        await _getRoute();
+      }
+
+      setState(() {});
+    }
+  }
+
+  Future<void> _showPathMapEvening() async {
+    _locations = [];
+    DatabaseReference busRef = FirebaseDatabase.instance.ref().child('busses');
+    Query query = busRef.orderByChild('driverId').equalTo(driverID);
+
+    DataSnapshot snapshot = await query.once().then((DatabaseEvent event) => event.snapshot);
+
+    if (snapshot.value != null) {
+      Map<dynamic, dynamic> buses = snapshot.value as Map<dynamic, dynamic>;
+      buses.forEach((key, busData) {
+        busId = key;
+
+        _locations.add(_currentDriverPosition);
         if (busData['children'] != null) {
           Map<dynamic, dynamic> children = busData['children'];
           children.forEach((childKey, childData) {
@@ -194,20 +236,56 @@ class _DriverHomeState extends State<DriverHome> {
     });
   }
 
-  void _startDemo() {
+  Future<void> _startDemo() async {
     if (_polylines.isEmpty) return;
+
+    DatabaseReference statusRef = FirebaseDatabase.instance.ref().child('busses')
+        .child(busId!).child('status');
+
+    statusRef.set("Started");
 
     // Get the polyline points from the first polyline (assuming there's only one)
     List<LatLng> routePoints = _polylines.first.points;
     int currentPointIndex = 0;
+    statusRef.set("Ongoing");
+
+    DatabaseReference alertRef = FirebaseDatabase.instance.ref().child('busses')
+        .child(busId!).child('alert');
 
     Timer.periodic(const Duration(seconds: 2), (timer) {
       if (currentPointIndex >= routePoints.length) {
         timer.cancel();
+        statusRef.set("Completed");
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomPopupBar(
+              imageUrl: 'assets/correct.png',
+              title: 'Trip Complete!',
+              buttonText: 'Ok',
+              onPressed: () {
+                statusRef.set("Idle");
+              },
+            );
+          },
+        );
       } else {
         LatLng newPosition = routePoints[currentPointIndex];
         _updateDriverPosition(newPosition);
 
+        const LatLng fixedLocation = LatLng(6.7256, 80.3327);
+        double distance = _calculateDistance(newPosition, fixedLocation);
+        // Assuming an average speed of 60 km/h
+        double averageSpeed = 60.0; // in km/h
+        double timeInHours = distance / averageSpeed;
+        double timeInMinutes = timeInHours * 60;
+
+        // Check if the time to reach the fixed location is about 5 minutes
+        if (timeInMinutes <= 5) {
+          alertRef.set("5");
+        } else if (timeInMinutes <= 10) {
+          alertRef.set("10");
+        }
         // Move the camera to follow the driver's marker
         _mapController?.animateCamera(
           CameraUpdate.newLatLng(newPosition),
@@ -218,9 +296,31 @@ class _DriverHomeState extends State<DriverHome> {
     });
   }
 
+  // Function to calculate the distance between two LatLng points
+  double _calculateDistance(LatLng start, LatLng end) {
+    const double earthRadiusKm = 6371;
+
+    double dLat = _degreesToRadians(end.latitude - start.latitude);
+    double dLng = _degreesToRadians(end.longitude - start.longitude);
+
+    double a =
+        sin(dLat / 2) * sin(dLat / 2) +
+            cos(_degreesToRadians(start.latitude)) * cos(_degreesToRadians(end.latitude)) *
+                sin(dLng / 2) * sin(dLng / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return earthRadiusKm * c;
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * (pi / 180);
+  }
+
   Set<Marker> _createMarkers() {
-    // Convert _locations to markers
-    Set<Marker> markers = _locations.map((location) {
+    // Filter out the driver's location from _locations
+    Set<Marker> markers = _locations
+        .where((location) => location != _currentDriverPosition)
+        .map((location) {
       return Marker(
         markerId: MarkerId(location.latitude.toString() + location.longitude.toString()),
         position: location,
@@ -231,7 +331,6 @@ class _DriverHomeState extends State<DriverHome> {
     if (_driverMarker != null) {
       markers.add(_driverMarker!);
     }
-
     return markers;
   }
 
@@ -381,9 +480,66 @@ class _DriverHomeState extends State<DriverHome> {
               child: const Icon(Icons.navigation),
             ),
           ),
+          Positioned(
+            bottom: 16.0,
+            right: 16.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                if (kDebugMode) {
+                  // _showPathMapEvening();
+                  // _startDemo();
+                }
+              },
+              child: const Icon(Icons.navigation),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  void _getCurrentLocation() async {
+    // Check if location services are enabled
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled, don't continue
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, don't continue
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are permanently denied, don't continue
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get the current position
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    // Update the current driver position
+    // setState(() {
+    //   _currentDriverPosition =
+    //       LatLng(position.latitude, position.longitude);
+    //
+    //   // Update the marker position
+    //   _driverMarker = Marker(
+    //     markerId: const MarkerId('driver'),
+    //     position: _currentDriverPosition,
+    //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    //   );
+    // });
   }
 
   // Set<Marker> _createMarkers() {
