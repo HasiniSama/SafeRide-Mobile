@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'package:safe_ride_mobile/widgets/profile.dart';
 
 import '../../models/child.dart';
 import '../../providers/selected.child.dart';
+import '../../widgets/PopUp.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({
@@ -28,7 +30,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   Marker? _driverMarker;
   Marker? _startLocationMarker;
   Marker? _schoolMarker;
+  Marker? _homeMarker;
   LatLng? _updateDriverPosition;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
@@ -42,6 +46,24 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       if (busId != null) {
         _listenToBusUpdates(busId!);
       }
+
+      setState(() {
+        _startLocationMarker = Marker(
+          markerId: const MarkerId('startLocationMarker'),
+          position: const LatLng(6.7312446, 80.2781262),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // Start location marker in red
+        );
+        _schoolMarker = Marker(
+          markerId: const MarkerId('schoolMarker'),
+          position: const LatLng(6.6825, 80.3988),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue), // School marker in blue
+        );
+        _homeMarker = Marker(
+          markerId: const MarkerId('homeMarker'),
+          position: const LatLng(6.7256, 80.3327),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen), // Home marker in green
+        );
+      });
     });
   }
 
@@ -90,6 +112,29 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
         });
       }
     });
+
+    // Listen for status updates
+    DatabaseReference statusRef = FirebaseDatabase.instance.ref().child('busses').child(busId).child('status');
+    statusRef.onValue.listen((event) {
+      final status = event.snapshot.value as String?;
+      if (status != null && status == 'Started') {
+        // Send a push notification
+        _sendPushNotification();
+      }
+    });
+  }
+
+  Future<void> _sendPushNotification() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return const BottomPopupBar(
+          imageUrl: 'assets/correct.png',
+          title: 'Trip Started!',
+          buttonText: 'Ok'
+        );
+      },
+    );
   }
 
   Set<Marker> _createMarkers() {
@@ -97,6 +142,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       if (_startLocationMarker != null) _startLocationMarker!,
       if (_schoolMarker != null) _schoolMarker!,
       if (_driverMarker != null) _driverMarker!,
+      if (_homeMarker != null) _homeMarker!, // Added _homeMarker to the set
     };
   }
 

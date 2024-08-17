@@ -34,6 +34,8 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
   final TextEditingController nicController = TextEditingController();
   final TextEditingController vehicleRegistrationController = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     drivingLicenseController.dispose();
@@ -127,14 +129,15 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
                           ],
                         ),
                         const SizedBox(height: 30),
-                        ElevatedButton(
-                          key: const Key('signupdriverdocButton'),
-                          style: AppButtonsStyle.blueButtonStyle,
-                          onPressed: () {
-                            registerNewUser(context);
-                          },
-                          child: const CustomText(text: 'Submit', fontSize: 24),
-                        ),
+                        _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            :ElevatedButton(
+                              style: AppButtonsStyle.blueButtonStyle,
+                              onPressed: () {
+                                registerNewUser(context);
+                              },
+                              child: const CustomText(text: 'Submit', fontSize: 24),
+                            ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           style: AppButtonsStyle.lightBlueButtonStyle,
@@ -181,6 +184,10 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
       return; // Exit function if validation fails
     }
 
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: widget.email,
@@ -191,24 +198,31 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
 
         String uid = credential.user!.uid;
 
-        // String drivingLicenseUrl = await uploadFileToFirebaseStorage(drivingLicenseController.text, uid, 'driving_license');
-        // String nicFileUrl = await uploadFileToFirebaseStorage(nicController.text, uid, 'nic');
-        // String vehicleRegistrationUrl = await uploadFileToFirebaseStorage(vehicleRegistrationController.text, uid, 'vehicle_registration');
+        String drivingLicenseUrl = await uploadFileToFirebaseStorage(
+            drivingLicenseController.text, uid, 'driving_license');
+        String nicFileUrl =
+        await uploadFileToFirebaseStorage(nicController.text, uid, 'nic');
+        String vehicleRegistrationUrl = await uploadFileToFirebaseStorage(
+            vehicleRegistrationController.text, uid, 'vehicle_registration');
 
         //Save User data into database
-        Map userDataMap = {
+        Map<String, String> userDataMap = {
           "firstName": widget.firstName.trim(),
           "lastName": widget.lastName.trim(),
           "email": widget.email.trim(),
           "nic": widget.nic.trim(),
           "mobile": widget.mobile.trim(),
           "role": 'driver',
-          // "drivingLicenseUrl": drivingLicenseUrl,
-          // "nicFileUrl": nicFileUrl,
-          // "vehicleRegistrationUrl": vehicleRegistrationUrl
+          "drivingLicenseUrl": drivingLicenseUrl,
+          "nicFileUrl": nicFileUrl,
+          "vehicleRegistrationUrl": vehicleRegistrationUrl,
+          "status": "pending"
         };
         usersRef.child(uid).set(userDataMap);
       }
+      setState(() {
+        _isLoading = false;
+      });
       // Registration successful
       showModalBottomSheet(
         context: context,
@@ -248,6 +262,9 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
           );
         },
       );
+      setState(() {
+        _isLoading = false;
+      });
       print(errorMessage); // Print error message for debugging
     } catch (e) {
       // Other errors
@@ -268,11 +285,14 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
           );
         },
       );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
-  Future<String> uploadFileToFirebaseStorage(String filePath, String uid, String fileName) async {
-
+  Future<String> uploadFileToFirebaseStorage(
+      String filePath, String uid, String fileName) async {
     if (filePath.isNotEmpty) {
       File file = File(filePath);
 
@@ -285,7 +305,8 @@ class _SignUpDriverDocPageState extends State<SignUpDriverDocPage> {
         int length = await file.length();
         print('File length: $length');
 
-        Reference storageRef = FirebaseStorage.instance.ref().child('users/$uid/$fileName');
+        Reference storageRef =
+        FirebaseStorage.instance.ref().child('users/$uid/$fileName');
         UploadTask uploadTask = storageRef.putFile(file);
         TaskSnapshot snapshot = await uploadTask;
         String downloadUrl = await snapshot.ref.getDownloadURL();
